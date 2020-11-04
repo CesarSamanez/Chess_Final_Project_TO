@@ -19,32 +19,32 @@ Board::Board(QWidget *parent) : QWidget(parent), ui(new Ui::Board)
      */
 
     /* Torres */
-    black_rook1 = std::make_unique<Black_Rook>(this);
-    black_rook2 = std::make_unique<Black_Rook>(this);
+    black_rook1 = std::make_unique<Rook>(this, "Black");
+    black_rook2 = std::make_unique<Rook>(this, "Black");
 
     /* Caballos */
-    black_knight1 = std::make_unique<Black_Knight>(this);
-    black_knight2 = std::make_unique<Black_Knight>(this);
+    black_knight1 = std::make_unique<Knight>(this, "Black");
+    black_knight2 = std::make_unique<Knight>(this, "Black");
 
     /* Alfiles */
-    black_bishop1 = std::make_unique<Black_Bishop>(this);
-    black_bishop2 = std::make_unique<Black_Bishop>(this);
+    black_bishop1 = std::make_unique<Bishop>(this, "Black");
+    black_bishop2 = std::make_unique<Bishop>(this, "Black");
 
     /* Rey */
-    black_king = std::make_unique<Black_King>(this);
+    black_king = std::make_unique<King>(this, "Black");
 
     /* Reyna */
-    black_queen = std::make_unique<Black_Queen>(this);
+    black_queen = std::make_unique<Queen>(this, "Black");
 
     /* Peones */
-    black_pawn1 = std::make_unique<Black_Pawn>(this);
-    black_pawn2 = std::make_unique<Black_Pawn>(this);
-    black_pawn3 = std::make_unique<Black_Pawn>(this);
-    black_pawn4 = std::make_unique<Black_Pawn>(this);
-    black_pawn5 = std::make_unique<Black_Pawn>(this);
-    black_pawn6 = std::make_unique<Black_Pawn>(this);
-    black_pawn7 = std::make_unique<Black_Pawn>(this);
-    black_pawn8 = std::make_unique<Black_Pawn>(this);
+    black_pawn1 = std::make_unique<Pawn>(this, "Black");
+    black_pawn2 = std::make_unique<Pawn>(this, "Black");
+    black_pawn3 = std::make_unique<Pawn>(this, "Black");
+    black_pawn4 = std::make_unique<Pawn>(this, "Black");
+    black_pawn5 = std::make_unique<Pawn>(this, "Black");
+    black_pawn6 = std::make_unique<Pawn>(this, "Black");
+    black_pawn7 = std::make_unique<Pawn>(this, "Black");
+    black_pawn8 = std::make_unique<Pawn>(this, "Black");
 
 
     /*
@@ -53,32 +53,32 @@ Board::Board(QWidget *parent) : QWidget(parent), ui(new Ui::Board)
      */
 
     /* Torres */
-    white_rook1 = std::make_unique<White_Rook>(this);
-    white_rook2 = std::make_unique<White_Rook>(this);
+    white_rook1 = std::make_unique<Rook>(this, "White");
+    white_rook2 = std::make_unique<Rook>(this, "White");
 
     /* Caballos */
-    white_knight1 = std::make_unique<White_Knight>(this);
-    white_knight2 = std::make_unique<White_Knight>(this);
+    white_knight1 = std::make_unique<Knight>(this, "White");
+    white_knight2 = std::make_unique<Knight>(this, "White");
 
     /* Alfiles */
-    white_bishop1 = std::make_unique<White_Bishop>(this);
-    white_bishop2 = std::make_unique<White_Bishop>(this);
+    white_bishop1 = std::make_unique<Bishop>(this, "White");
+    white_bishop2 = std::make_unique<Bishop>(this, "White");
 
     /* Rey */
-    white_king = std::make_unique<White_King>(this);
+    white_king = std::make_unique<King>(this, "White");
 
     /* Reyna */
-    white_queen = std::make_unique<White_Queen>(this);
+    white_queen = std::make_unique<Queen>(this, "White");
 
     /* Peones */
-    white_pawn1 = std::make_unique<White_Pawn>(this);
-    white_pawn2 = std::make_unique<White_Pawn>(this);
-    white_pawn3 = std::make_unique<White_Pawn>(this);
-    white_pawn4 = std::make_unique<White_Pawn>(this);
-    white_pawn5 = std::make_unique<White_Pawn>(this);
-    white_pawn6 = std::make_unique<White_Pawn>(this);
-    white_pawn7 = std::make_unique<White_Pawn>(this);
-    white_pawn8 = std::make_unique<White_Pawn>(this);
+    white_pawn1 = std::make_unique<Pawn>(this, "White");
+    white_pawn2 = std::make_unique<Pawn>(this, "White");
+    white_pawn3 = std::make_unique<Pawn>(this, "White");
+    white_pawn4 = std::make_unique<Pawn>(this, "White");
+    white_pawn5 = std::make_unique<Pawn>(this, "White");
+    white_pawn6 = std::make_unique<Pawn>(this, "White");
+    white_pawn7 = std::make_unique<Pawn>(this, "White");
+    white_pawn8 = std::make_unique<Pawn>(this, "White");
 
 
     /* Fichas creadas */
@@ -202,7 +202,7 @@ Board::~Board()
 }
 
 
-void Board::paintEvent(QPaintEvent *event)
+void Board::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     painter.drawPixmap(0,0, width(), height(), BoardIcon);
