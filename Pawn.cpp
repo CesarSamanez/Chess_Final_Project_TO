@@ -19,7 +19,7 @@ Pawn::Pawn(QWidget *parent, std::string _color) : Piece(parent, _color)
 
 std::string Pawn::GetName() const
 {
-    return "Rook";
+    return "Pawn";
 }
 
 bool Pawn::GetStatus() const
