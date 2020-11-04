@@ -1,4 +1,4 @@
-## ===================== CHESS GAME ============================== ##
+## ======= CHESS GAME ======== ##
 
 ## Integrantes
 Cesar Salvador Samanez Jimenez
