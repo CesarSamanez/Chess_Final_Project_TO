@@ -103,8 +103,6 @@ private:
     std::unique_ptr<Pawn> white_pawn7;
     std::unique_ptr<Pawn> white_pawn8;
 
-
-
     void mousePressEvent(QMouseEvent *event) override;
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;

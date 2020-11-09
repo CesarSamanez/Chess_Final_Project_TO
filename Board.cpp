@@ -201,7 +201,6 @@ Board::~Board()
     delete ui;
 }
 
-
 void Board::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
@@ -279,9 +278,6 @@ void Board::dropEvent(QDropEvent *event)
     }
 }
 
-
-
-
 void Board::mousePressEvent(QMouseEvent *event)
 {
 
@@ -292,9 +288,6 @@ void Board::mousePressEvent(QMouseEvent *event)
         return;
     }
     std::cout<<"child\n";
-
-
-
 
     QByteArray data;
     QDataStream dataStream(&data, QIODevice::WriteOnly);
