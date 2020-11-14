@@ -1,5 +1,7 @@
-## ======= CHESS GAME ======== ##
+# Chess Game
+_Universidad Nacional de San Agustín__
+_Juego de Ajedrez desarrollado para el curso de Tecnologías de Objeto_
 
-## Integrantes
-Cesar Salvador Samanez Jimenez
-Jhonatan Jesus Acuña Huisacayna
+## Autores ✒️
+* **Cesar Salvador Samanez Jimenez** 
+* **Jhonatan Jesús Acuña Huisacayna** 
