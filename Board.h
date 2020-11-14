@@ -33,6 +33,9 @@ public:
     ~Board();
 
     void paintEvent(QPaintEvent *event) override;
+    void initializeBoard();
+    void initializePieces();
+    void creationOfPieces();
 
 private:
     /* Icono */
