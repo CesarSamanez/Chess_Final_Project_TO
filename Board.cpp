@@ -71,10 +71,18 @@ void Board::dropEvent(QDropEvent *event)
         QByteArray data = event->mimeData()->data("application/x-dnditemdata");
         QDataStream dataStream(&data, QIODevice::ReadOnly);
 
+     /*
         QPoint offset;
         dataStream >> offset;
+      */
 
-        black_queen->move(event->pos() - offset);
+        /* Recalcular posicion para centrar la pieza */
+        int X = (event->pos().x()/80)*80;
+        int Y = (event->pos().y()/80)*80;
+
+        black_queen->move(X,Y);
+
+    //    black_queen->move(event->pos() - offset);
 
 
         if(event->source() == this)
@@ -100,10 +108,13 @@ void Board::mousePressEvent(QMouseEvent *event)
     auto child = childAt(event->pos());
     if(child == nullptr)
     {
-        std::cout<<"null\n";
+        std::cout <<"posicion("<< event->pos().x()<<","<<event->pos().y()<<")"<<std::endl;
+        std::cout <<"Nueva posicion: ("<<80*(event->pos().x()/80)<<","<<80*(event->pos().y()/80)<<")"<<std::endl;
         return;
     }
     std::cout<<"child\n";
+    std::cout <<"posicion("<< event->pos().x()<<","<<event->pos().y()<<")"<<std::endl;
+    std::cout <<"Nueva posicion: ("<<80*(event->pos().x()/80)<<","<<80*(event->pos().y()/80)<<")"<<std::endl;
 
     QByteArray data;
     QDataStream dataStream(&data, QIODevice::WriteOnly);

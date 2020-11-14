@@ -3,10 +3,8 @@
 
 #include <QLabel>
 #include <QPixmap>
-
 #include <iostream>
 #include <string>
-
 
 namespace Ui {
 class Piece;
@@ -14,7 +12,6 @@ class Piece;
 
 class Piece : public QLabel
 {
-    /* Macro para utilizar las cosas de QT */
     Q_OBJECT
 
 protected:
@@ -24,7 +21,6 @@ protected:
     std::string Color;
     bool Status;
     QPixmap PieceIcon;
-
 
 public:
     /* Constructor explicito */
@@ -36,8 +32,6 @@ public:
     virtual std::string GetColor() const = 0;
     virtual void MovePiece()=0;
     virtual ~Piece(){};
-
-
 };
 
 #endif // PIECE_H
