@@ -1,47 +1,51 @@
 #include "Queen.h"
 
-Queen::Queen(QWidget *parent, std::string _color) : Piece(parent, _color)
-{
-    if(Color.compare("White") == 0){
+Queen::Queen(QWidget * parent, std::string _color): Piece(parent, _color) {
+    if (Color.compare("White") == 0) {
         PieceIcon.load("../Chess_Final_Project_TO/Images/white_queen.png");
-    }
-    else if(Color.compare("Black") == 0)
-    {
+    } else if (Color.compare("Black") == 0) {
         PieceIcon.load("../Chess_Final_Project_TO/Images/black_queen.png");
-    }
-    else
-    {
-        std::cout<<"Invalid color"<<std::endl;
+    } else {
+        std::cout << "Invalid color" << std::endl;
         return;
     }
-    this->setPixmap(PieceIcon.scaled(QSize(80,80), Qt::KeepAspectRatio));
+    this -> setPixmap(PieceIcon.scaled(QSize(80, 80), Qt::KeepAspectRatio));
 }
 
-std::string Queen::GetName() const
-{
+std::string Queen::GetName() const {
     return "Queen";
 }
 
-bool Queen::GetStatus() const
-{
+bool Queen::GetStatus() const {
     return Status;
 }
 
-unsigned Queen::GetID() const
-{
+unsigned Queen::GetID() const {
     return ID;
 }
 
-std::string Queen::GetColor() const
-{
+std::string Queen::GetColor() const {
     return Color;
 }
 
-void Queen::MovePiece()
-{
+void Queen::SetRow(char _row) {
+    row = _row;
+}
+
+void Queen::SetCol(char _col) {
+    col = _col;
+}
+
+char Queen::GetRow() const {
+    return row;
+}
+
+char Queen::GetCol() const {
+    return col;
+}
+
+void Queen::MovePiece() {
 
 }
 
-Queen::~Queen()
-{
-}
+Queen::~Queen() {}

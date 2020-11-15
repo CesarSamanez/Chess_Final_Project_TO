@@ -3,16 +3,18 @@
 
 #include "Piece.h"
 
-class Pawn: public Piece
-{
+class Pawn: public Piece {
 public:
-    explicit Pawn(QWidget *parent = nullptr, std::string _color = "");
+    explicit Pawn(QWidget * parent = nullptr, std::string _color = "");
     std::string GetName() const;
     bool GetStatus() const;
     unsigned GetID() const;
     std::string GetColor() const;
-    void MovePiece();
-    ~Pawn();
+    void SetRow(char _row);
+    void SetCol(char _col);
+    char GetRow() const;
+    char GetCol() const;
+    void MovePiece();~Pawn();
 };
 
 #endif // PAWN_H
