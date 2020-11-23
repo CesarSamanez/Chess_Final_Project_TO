@@ -28,24 +28,25 @@ std::string Rook::GetColor() const {
     return Color;
 }
 
-void Rook::SetRow(char _row) {
-    row = _row;
+void Rook::SetPosition(unsigned _row, unsigned _col){
+    Row = _row;
+    Col = _col;
 }
 
-void Rook::SetCol(char _col) {
-    col = _col;
+unsigned Rook::GetRow() const {
+    return Row;
 }
 
-char Rook::GetRow() const {
-    return row;
+unsigned Rook::GetCol() const {
+    return Col;
 }
 
-char Rook::GetCol() const {
-    return col;
+bool Rook::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal) {
+return false;
 }
 
-void Rook::MovePiece() {
-
+bool Rook::Capture(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal){
+return false;
 }
 
 Rook::~Rook() {}

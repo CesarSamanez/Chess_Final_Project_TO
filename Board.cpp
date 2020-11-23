@@ -53,20 +53,32 @@ void Board::dropEvent(QDropEvent * event) {
         QDataStream dataStream( & itemData, QIODevice::ReadOnly);
 
         /* Recalcular posicion para centrar la pieza */
-        int positionX = (event -> pos().x() / 80);
-        int positionY = (event -> pos().y() / 80);
+        positionX = (event -> pos().x() / 80);
+        positionY = (event -> pos().y() / 80);
+
+        std::cout<<"Posicion hacia donde me dirijo ["<<positionY<<","<<positionX<<"]\n";
 
         /* Condicion para no sobreponer piezas */
         /*
          * Mejorar con casos de captuas
          */
-
-        if (MyBoardMapping[positionY][positionX] == nullptr) {
-
-            MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> move(positionX * 80, positionY * 80);
-            MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
-            MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
-
+        if(ValidateMovement(ReferentialPositionX, ReferentialPositionY,positionY, positionX))
+        {
+            if(MyBoardMapping[ReferentialPositionX][ReferentialPositionY]->Capture(MyBoardMapping, ReferentialPositionX, ReferentialPositionY, positionY, positionX)){
+                /* Captura de pieza */
+                MyBoardMapping[positionY][positionX]->setVisible(false);
+                std::cout<<"Se capturo la pieza ["<<positionY<<","<<positionX<<"]\n";
+                MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> move(positionX * 80, positionY * 80);
+                MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
+                MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
+            }else if(MyBoardMapping[positionY][positionX] == nullptr){
+                //Mover pieza nueva posicion
+                MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> move(positionX * 80, positionY * 80);
+                MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
+                MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
+            }else{
+                return;
+            }
             if (event -> source() == this) {
                 event -> setDropAction(Qt::MoveAction);
                 event -> accept();
@@ -76,6 +88,7 @@ void Board::dropEvent(QDropEvent * event) {
         } else {
             event -> ignore();
         }
+
     } else {
         return;
     }
@@ -90,6 +103,8 @@ void Board::mousePressEvent(QMouseEvent * event) {
 
     ReferentialPositionX = event -> pos().y() / 80;
     ReferentialPositionY = event -> pos().x() / 80;
+
+    std::cout<<"Posicion donde presiono primero ["<<ReferentialPositionX<<","<<ReferentialPositionY<<"]\n";
 
     QByteArray itemData;
     QDataStream dataStream( & itemData, QIODevice::WriteOnly);
@@ -107,16 +122,6 @@ void Board::mousePressEvent(QMouseEvent * event) {
 void Board::InitializeBoard() {
     /* Leer icono */
     BoardIcon.load("../Chess_Final_Project_TO/Images/chess_board.png");
-
-    /* Mapping Board */
-    auto size = sizeof(MyBoardMapping) / sizeof( * MyBoardMapping);
-
-    /* Inicializar punteros */
-    for (size_t row = 0; row < size; ++row) {
-        for (size_t col = 0; col < size; ++col) {
-            MyBoardMapping[row][col] = nullptr;
-        }
-    }
 
     /* Inicializar piezas en el tablero */
     InitializePieces();
@@ -175,164 +180,132 @@ void Board::CreationOfPieces() {
     // Piezas negras
     black_rook1 -> move(0, 0);
     black_rook1 -> show();
-    black_rook1 -> SetRow('8');
-    black_rook1 -> SetCol('a');
+    black_rook1->SetPosition(0,0);
 
     black_rook2 -> move(560, 0);
     black_rook2 -> show();
-    black_rook2 -> SetRow('8');
-    black_rook2 -> SetCol('h');
+    black_rook2 -> SetPosition(0,7);
 
     black_knight1 -> move(80, 0);
     black_knight1 -> show();
-    black_knight1 -> SetRow('8');
-    black_knight1 -> SetCol('b');
+    black_knight1 -> SetPosition(0,1);
 
     black_knight2 -> move(480, 0);
     black_knight2 -> show();
-    black_knight2 -> SetRow('8');
-    black_knight2 -> SetCol('g');
+    black_knight2 -> SetPosition(0,6);
 
     black_bishop1 -> move(160, 0);
     black_bishop1 -> show();
-    black_bishop1 -> SetRow('8');
-    black_bishop1 -> SetCol('c');
+    black_bishop1 -> SetPosition(0,2);
 
     black_bishop2 -> move(400, 0);
     black_bishop2 -> show();
-    black_bishop2 -> SetRow('8');
-    black_bishop2 -> SetCol('f');
+    black_bishop2 -> SetPosition(0,5);
 
     black_king -> move(320, 0);
     black_king -> show();
-    black_king -> SetRow('8');
-    black_king -> SetCol('e');
+    black_king -> SetPosition(0,4);
 
     black_queen -> move(240, 0);
     black_queen -> show();
-    black_queen -> SetRow('8');
-    black_queen -> SetCol('d');
+    black_queen -> SetPosition(0,3);
 
     black_pawn1 -> move(0, 80);
     black_pawn1 -> show();
-    black_pawn1 -> SetRow('7');
-    black_pawn1 -> SetCol('a');
+    black_pawn1 -> SetPosition(1,0);
 
     black_pawn2 -> move(80, 80);
     black_pawn2 -> show();
-    black_pawn2 -> SetRow('7');
-    black_pawn2 -> SetCol('b');
+    black_pawn2 -> SetPosition(1,1);
 
     black_pawn3 -> move(160, 80);
     black_pawn3 -> show();
-    black_pawn3 -> SetRow('7');
-    black_pawn3 -> SetCol('c');
+    black_pawn3 -> SetPosition(1,2);
 
     black_pawn4 -> move(240, 80);
     black_pawn4 -> show();
-    black_pawn4 -> SetRow('7');
-    black_pawn4 -> SetCol('d');
+    black_pawn4 -> SetPosition(1,3);
 
     black_pawn5 -> move(320, 80);
     black_pawn5 -> show();
-    black_pawn5 -> SetRow('7');
-    black_pawn5 -> SetCol('e');
+    black_pawn5 -> SetPosition(1,4);
 
     black_pawn6 -> move(400, 80);
     black_pawn6 -> show();
-    black_pawn6 -> SetRow('7');
-    black_pawn6 -> SetCol('f');
+    black_pawn6 -> SetPosition(1,5);
 
     black_pawn7 -> move(480, 80);
     black_pawn7 -> show();
-    black_pawn7 -> SetRow('7');
-    black_pawn7 -> SetCol('g');
+    black_pawn7 -> SetPosition(1,6);
 
     black_pawn8 -> move(560, 80);
     black_pawn8 -> show();
-    black_pawn8 -> SetRow('7');
-    black_pawn8 -> SetCol('h');
+    black_pawn8 -> SetPosition(1,7);
 
     // Piezas blancas
     white_rook1 -> move(0, 560);
     white_rook1 -> show();
-    white_rook1 -> SetRow('1');
-    white_rook1 -> SetCol('a');
+    white_rook1 -> SetPosition(7,0);
 
     white_rook2 -> move(560, 560);
     white_rook2 -> show();
-    white_rook2 -> SetRow('1');
-    white_rook2 -> SetCol('h');
+    white_rook2 -> SetPosition(7,7);
 
     white_knight1 -> move(80, 560);
     white_knight1 -> show();
-    white_knight1 -> SetRow('1');
-    white_knight1 -> SetCol('b');
+    white_knight1 -> SetPosition(7,1);
 
     white_knight2 -> move(480, 560);
     white_knight2 -> show();
-    white_knight2 -> SetRow('1');
-    white_knight2 -> SetCol('g');
+    white_knight2 -> SetPosition(7,6);
 
     white_bishop1 -> move(160, 560);
     white_bishop1 -> show();
-    white_bishop1 -> SetRow('1');
-    white_bishop1 -> SetCol('c');
+    white_bishop1 -> SetPosition(7,2);
 
     white_bishop2 -> move(400, 560);
     white_bishop2 -> show();
-    white_bishop2 -> SetRow('1');
-    white_bishop2 -> SetCol('f');
+    white_bishop2 -> SetPosition(7,5);
 
     white_king -> move(240, 560);
     white_king -> show();
-    white_king -> SetRow('1');
-    white_king -> SetCol('d');
+    white_king -> SetPosition(7,3);
 
     white_queen -> move(320, 560);
     white_queen -> show();
-    white_queen -> SetRow('1');
-    white_queen -> SetCol('e');
+    white_queen -> SetPosition(7,4);
 
     white_pawn1 -> move(0, 480);
     white_pawn1 -> show();
-    white_pawn1 -> SetRow('2');
-    white_pawn1 -> SetCol('a');
+    white_pawn1 -> SetPosition(6,0);
 
     white_pawn2 -> move(80, 480);
     white_pawn2 -> show();
-    white_pawn2 -> SetRow('2');
-    white_pawn2 -> SetCol('b');
+    white_pawn2 -> SetPosition(6,1);
 
     white_pawn3 -> move(160, 480);
     white_pawn3 -> show();
-    white_pawn3 -> SetRow('2');
-    white_pawn3 -> SetCol('c');
+    white_pawn3 -> SetPosition(6,2);
 
     white_pawn4 -> move(240, 480);
     white_pawn4 -> show();
-    white_pawn4 -> SetRow('2');
-    white_pawn4 -> SetCol('d');
+    white_pawn4 -> SetPosition(6,3);
 
     white_pawn5 -> move(320, 480);
     white_pawn5 -> show();
-    white_pawn5 -> SetRow('2');
-    white_pawn5 -> SetCol('e');
+    white_pawn5 -> SetPosition(6,4);
 
     white_pawn6 -> move(400, 480);
     white_pawn6 -> show();
-    white_pawn6 -> SetRow('2');
-    white_pawn6 -> SetCol('f');
+    white_pawn6 -> SetPosition(6,5);
 
     white_pawn7 -> move(480, 480);
     white_pawn7 -> show();
-    white_pawn7 -> SetRow('2');
-    white_pawn7 -> SetCol('g');
+    white_pawn7 -> SetPosition(6,6);
 
     white_pawn8 -> move(560, 480);
     white_pawn8 -> show();
-    white_pawn8 -> SetRow('2');
-    white_pawn8 -> SetCol('h');
+    white_pawn8 -> SetPosition(6,7);
 
     MappingOfPieces();
 }
@@ -373,4 +346,46 @@ void Board::MappingOfPieces() {
     MyBoardMapping[6][5] = white_pawn6;
     MyBoardMapping[6][6] = white_pawn7;
     MyBoardMapping[6][7] = white_pawn8;
+
 }
+
+bool Board::ValidateMovement(unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal){
+
+    auto piecePosition = MyBoardMapping[rowInitial][colInitial];
+
+    if(piecePosition->GetName().compare("Rook") == 0) {
+        std::cout<<"Es una torre\n";
+    }else if(piecePosition->GetName().compare("Knight") == 0){
+        std::cout<<"Es un caballo\n";
+    }else if(piecePosition->GetName().compare("Bishop") == 0){
+        std::cout<<"Es un alfil\n";
+    }else if(piecePosition->GetName().compare("Queen") == 0){
+        std::cout<<"Es una reyna\n";
+    }else if(piecePosition->GetName().compare("King") == 0){
+        std::cout<<"Es un rey\n";
+    }else if(piecePosition->GetName().compare("Pawn") == 0){
+        return piecePosition->MovePiece(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
+    }
+
+    return false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

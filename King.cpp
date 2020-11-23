@@ -28,24 +28,25 @@ std::string King::GetColor() const {
     return Color;
 }
 
-void King::SetRow(char _row) {
-    row = _row;
+void King::SetPosition(unsigned _row, unsigned _col){
+    Row = _row;
+    Col = _col;
 }
 
-void King::SetCol(char _col) {
-    col = _col;
+unsigned King::GetRow() const {
+    return Row;
 }
 
-char King::GetRow() const {
-    return row;
+unsigned King::GetCol() const {
+    return Col;
 }
 
-char King::GetCol() const {
-    return col;
+bool King::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal) {
+return false;
 }
 
-void King::MovePiece() {
-
+bool King::Capture(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal){
+    return false;
 }
 
 King::~King() {}

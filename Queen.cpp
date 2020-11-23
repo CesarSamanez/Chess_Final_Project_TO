@@ -28,24 +28,25 @@ std::string Queen::GetColor() const {
     return Color;
 }
 
-void Queen::SetRow(char _row) {
-    row = _row;
+void Queen::SetPosition(unsigned _row, unsigned _col){
+    Row = _row;
+    Col = _col;
 }
 
-void Queen::SetCol(char _col) {
-    col = _col;
+unsigned Queen::GetRow() const {
+    return Row;
 }
 
-char Queen::GetRow() const {
-    return row;
+unsigned Queen::GetCol() const {
+    return Col;
 }
 
-char Queen::GetCol() const {
-    return col;
+bool Queen::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal) {
+return false;
 }
 
-void Queen::MovePiece() {
-
+bool Queen::Capture(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal){
+    return false;
 }
 
 Queen::~Queen() {}

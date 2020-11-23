@@ -24,28 +24,32 @@ unsigned Bishop::GetID() const {
     return ID;
 }
 
-void Bishop::SetRow(char _row) {
-    row = _row;
+void Bishop::SetPosition(unsigned _row, unsigned _col){
+    Row = _row;
+    Col = _col;
 }
 
-void Bishop::SetCol(char _col) {
-    col = _col;
+unsigned Bishop::GetRow() const {
+    return Row;
 }
 
-char Bishop::GetRow() const {
-    return row;
-}
-
-char Bishop::GetCol() const {
-    return col;
+unsigned Bishop::GetCol() const {
+    return Col;
 }
 
 std::string Bishop::GetColor() const {
     return Color;
 }
 
-void Bishop::MovePiece() {
 
+bool Bishop::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal) {
+
+    return false;
 }
+
+bool Bishop::Capture(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal){
+return false;
+}
+
 
 Bishop::~Bishop() {}

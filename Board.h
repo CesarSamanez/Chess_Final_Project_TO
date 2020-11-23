@@ -9,6 +9,8 @@
 
 /* STL */
 #include <iostream>
+#include <string>
+#include <cmath>
 #include <memory>
 #include <vector>
 
@@ -39,16 +41,17 @@ public:
     void CreationOfPieces();
     void MappingOfPieces();
 
+    bool ValidateMovement(unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal);
 private:
     /* Icono */
     QPixmap BoardIcon;
     Ui::Board * ui;
 
     //Variables auxiliares
-     int ReferentialPositionX, ReferentialPositionY;
+     int ReferentialPositionX, ReferentialPositionY, positionX, positionY;
 
     /* Mapear tablero */
-    Piece * MyBoardMapping[8][8];
+    Piece *MyBoardMapping[8][8];
 
     /*
      *  FICHAS NEGRAS
