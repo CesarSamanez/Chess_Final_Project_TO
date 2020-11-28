@@ -44,8 +44,8 @@ unsigned Rook::GetCol() const {
 bool Rook::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal) {
     Piece *aux = MyBoardMapping[rowFinal][colFinal];
 
-    auto resFil = rowFinal - rowInitial; //diferencia de filas
-    auto resCol = colInitial - colFinal; //diferencia de columnas
+    //auto resFil = rowFinal - rowInitial; //diferencia de filas
+    //auto resCol = colInitial - colFinal; //diferencia de columnas
     if(Color.compare("White")==0)    {
         if((rowInitial == rowFinal)||(colInitial==colFinal)){
             if(MyBoardMapping[rowFinal][colFinal]!=nullptr){
