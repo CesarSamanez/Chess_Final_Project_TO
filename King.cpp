@@ -46,11 +46,11 @@ bool King::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned 
     int resCol = abs((int)colInitial-(int)colFinal);
 
     if(Color.compare("White")==0){
-        if((resFil <=1) && (resCol)){
+        if((resFil <=1) && (resCol<= 1)){
             return true;
         }
     }else if(Color.compare("Black")==0){
-        if((resFil <=1) && (resCol)){
+        if((resFil <=1) && (resCol <= 1)){
             return true;
         }
     }
