@@ -42,7 +42,19 @@ unsigned King::GetCol() const {
 }
 
 bool King::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal) {
-return false;
+    int resFil = abs((int)rowInitial-(int)rowFinal);
+    int resCol = abs((int)colInitial-(int)colFinal);
+
+    if(Color.compare("White")==0){
+        if((resFil <=1) && (resCol)){
+            return true;
+        }
+    }else if(Color.compare("Black")==0){
+        if((resFil <=1) && (resCol)){
+            return true;
+        }
+    }
+    return false;
 }
 
 bool King::Capture(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal){

@@ -122,7 +122,11 @@ void Board::mousePressEvent(QMouseEvent * event) {
 void Board::InitializeBoard() {
     /* Leer icono */
     BoardIcon.load("../Chess_Final_Project_TO/Images/chess_board.png");
-
+    for(int i=0;i<8;i++){
+        for(int j=0;j<8;j++){
+            MyBoardMapping [i][j] = nullptr;
+        }
+    }
     /* Inicializar piezas en el tablero */
     InitializePieces();
 }
@@ -333,8 +337,8 @@ void Board::MappingOfPieces() {
     MyBoardMapping[7][0] = white_rook1;
     MyBoardMapping[7][1] = white_knight1;
     MyBoardMapping[7][2] = white_bishop1;
-    MyBoardMapping[7][3] = white_queen;
-    MyBoardMapping[7][4] = white_king;
+    MyBoardMapping[7][3] = white_king;
+    MyBoardMapping[7][4] = white_queen;
     MyBoardMapping[7][5] = white_bishop2;
     MyBoardMapping[7][6] = white_knight2;
     MyBoardMapping[7][7] = white_rook2;
@@ -354,15 +358,24 @@ bool Board::ValidateMovement(unsigned rowInitial, unsigned colInitial, unsigned 
     auto piecePosition = MyBoardMapping[rowInitial][colInitial];
 
     if(piecePosition->GetName().compare("Rook") == 0) {
-        std::cout<<"Es una torre\n";
+        //torre
+        return piecePosition->MovePiece(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
+
     }else if(piecePosition->GetName().compare("Knight") == 0){
-        std::cout<<"Es un caballo\n";
+        //caballo
+        return piecePosition->MovePiece(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
+
     }else if(piecePosition->GetName().compare("Bishop") == 0){
-        std::cout<<"Es un alfil\n";
+        //alfil
+        return piecePosition->MovePiece(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
+
     }else if(piecePosition->GetName().compare("Queen") == 0){
-        std::cout<<"Es una reyna\n";
+        //reina
+        return piecePosition->MovePiece(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
     }else if(piecePosition->GetName().compare("King") == 0){
-        std::cout<<"Es un rey\n";
+        //rey
+        return piecePosition->MovePiece(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
+
     }else if(piecePosition->GetName().compare("Pawn") == 0){
         return piecePosition->MovePiece(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
     }

@@ -42,11 +42,47 @@ unsigned Knight::GetCol() const {
 }
 
 bool Knight::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal) {
-return false;
+    auto movKni1= (rowInitial-rowFinal)*(rowInitial-rowFinal) + (colInitial-colFinal)*(colInitial-colFinal);
+    //auto movKni2= (rowInitial-rowFinal)-(rowInitial+rowFinal) - (colInitial-colFinal)*(colInitial-colFinal);
+    //Piece *aux = MyBoardMapping[rowFinal][colFinal];
+    if(Color.compare("White")){
+        if(movKni1 == 5 ){
+            if(MyBoardMapping[rowFinal][colFinal]!=nullptr){
+                if(MyBoardMapping[rowFinal][colFinal]->GetColor().compare(this->GetColor())!=0 ){
+                    return Capture(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
+                }else{
+                    return false;
+                }
+            }
+            return true;
+        }
+    }else if(Color.compare("Black")){
+        if(movKni1 == 5 ){
+            if(MyBoardMapping[rowFinal][colFinal]!=nullptr){
+                if(MyBoardMapping[rowFinal][colFinal]->GetColor().compare(this->GetColor())!=0 ){
+                    return Capture(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
+                }else{
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+    return false;
 }
 
 bool Knight::Capture(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal){
-  return false;
+    //Piece * aux = MyBoardMapping[rowFinal][colFinal];
+    if(Color.compare("White")==0){
+        if((MyBoardMapping[rowFinal][colFinal]!=nullptr) && (MyBoardMapping[rowFinal][colFinal]->GetColor().compare("Black")==0)){
+            return  true;
+        }
+    }else if (Color.compare("Black")==0){
+        if((MyBoardMapping[rowFinal][colFinal]!=nullptr) && (MyBoardMapping[rowFinal][colFinal]->GetColor().compare("White")==0)){
+            return  true;
+        }
+    }
+    return false;
 }
 
 Knight::~Knight() {}
