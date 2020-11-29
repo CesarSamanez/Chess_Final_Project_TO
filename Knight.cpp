@@ -28,54 +28,37 @@ std::string Knight::GetColor() const {
     return Color;
 }
 
-void Knight::SetPosition(unsigned _row, unsigned _col){
+void Knight::SetPosition(int _row, int _col) {
     Row = _row;
     Col = _col;
 }
 
-unsigned Knight::GetRow() const {
+int Knight::GetRow() const {
     return Row;
 }
 
-unsigned Knight::GetCol() const {
+int Knight::GetCol() const {
     return Col;
 }
 
-bool Knight::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal) {
-    auto movKni1= (rowInitial-rowFinal)*(rowInitial-rowFinal) + (colInitial-colFinal)*(colInitial-colFinal);
-    //auto movKni2= (rowInitial-rowFinal)-(rowInitial+rowFinal) - (colInitial-colFinal)*(colInitial-colFinal);
-    //Piece *aux = MyBoardMapping[rowFinal][colFinal];
-    if(Color.compare("White")){
-        if(movKni1 == 5 ){
-            if(MyBoardMapping[rowFinal][colFinal]!=nullptr){
-                if(MyBoardMapping[rowFinal][colFinal]->GetColor().compare(this->GetColor())!=0 ){
-                    return Capture(MyBoardMapping, rowFinal, colFinal);
-                }else{
-                    return false;
-                }
-            }
-            return true;
-        }
-    }else if(Color.compare("Black")){
-        if(movKni1 == 5 ){
-            if(MyBoardMapping[rowFinal][colFinal]!=nullptr){
-                if(MyBoardMapping[rowFinal][colFinal]->GetColor().compare(this->GetColor())!=0 ){
-                    return Capture(MyBoardMapping,  rowFinal, colFinal);
-                }else{
-                    return false;
-                }
-            }
-            return true;
-        }
+bool Knight::MovePiece(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
+    Piece * tmp = MyBoardMapping[rowFinal][colFinal];
+    int rowDifference = GetRow() - rowFinal;
+    int colDifference = GetCol() - colFinal;
+
+    if (((abs(rowDifference) == 1) && (abs(colDifference) == 2)) || ((abs(rowDifference) == 2) && (abs(colDifference) == 1))) {
+        if (tmp != nullptr)
+            if (tmp -> GetColor().compare(GetColor()) == 0)
+                return false;
+        return true;
+    } else {
+        return false;
     }
-    return false;
+
 }
 
-bool Knight::Capture(Piece *MyBoardMapping[8][8], unsigned rowFinal, unsigned colFinal){
-    if(MyBoardMapping[rowFinal][colFinal]!= nullptr && (MyBoardMapping[rowFinal][colFinal]->GetColor().compare(GetColor())!=0))
-        return true;
-
-    return false;
+bool Knight::Capture(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
+    return (MyBoardMapping[rowFinal][colFinal] != nullptr && (MyBoardMapping[rowFinal][colFinal] -> GetColor().compare(GetColor()) != 0));
 }
 
 Knight::~Knight() {}

@@ -1,4 +1,5 @@
 #include "Bishop.h"
+
 Bishop::Bishop(QWidget * parent, std::string _color): Piece(parent, _color) {
     if (Color.compare("White") == 0) {
         PieceIcon.load("../Chess_Final_Project_TO/Images/white_bishop.png");
@@ -23,16 +24,16 @@ unsigned Bishop::GetID() const {
     return ID;
 }
 
-void Bishop::SetPosition(unsigned _row, unsigned _col){
+void Bishop::SetPosition(int _row, int _col) {
     Row = _row;
     Col = _col;
 }
 
-unsigned Bishop::GetRow() const {
+int Bishop::GetRow() const {
     return Row;
 }
 
-unsigned Bishop::GetCol() const {
+int Bishop::GetCol() const {
     return Col;
 }
 
@@ -40,42 +41,29 @@ std::string Bishop::GetColor() const {
     return Color;
 }
 
+bool Bishop::MovePiece(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
+    Piece * tmp = MyBoardMapping[rowFinal][colFinal];
 
-bool Bishop::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal) {
+    int rowDifference = abs(GetRow() - rowFinal);
+    int colDifference = abs(GetCol() - colFinal);
 
-    int rowDifference, colDifference;
-    Piece* tmp = MyBoardMapping[rowFinal][colFinal];
-
-    rowDifference = abs(static_cast<int>(rowInitial - rowFinal));
-    colDifference = abs(static_cast<int>(colInitial - colFinal));
-
-    if(rowDifference == colDifference){
-        if(tmp != nullptr)
-            if(tmp->GetColor().compare(GetColor()) == 0)
+    if (rowDifference == colDifference) {
+        if (tmp != nullptr)
+            if (tmp -> GetColor().compare(GetColor()) == 0)
                 return false;
 
-        /*
-         * Desbordamiento de memoria error -> indice incorrecto
-         */
-        /*
-        for(int i=1; i<rowDifference; i++){
-            tmp = MyBoardMapping[GetRow() + i * ((rowFinal - GetRow())/rowDifference)][GetCol() + i * ((colFinal - GetCol())/rowDifference)];
-            if(tmp != nullptr)
+        for (int i = 1; i < rowDifference; i++) {
+            tmp = MyBoardMapping[GetRow() + i * ((rowFinal - GetRow()) / rowDifference)][GetCol() + i * ((colFinal - GetCol()) / rowDifference)];
+            if (tmp != nullptr)
                 return false;
         }
-        */
-
-    }
-
-    return false;
-}
-
-bool Bishop::Capture(Piece *MyBoardMapping[8][8],  unsigned rowFinal, unsigned colFinal){
-    if(MyBoardMapping[rowFinal][colFinal]!= nullptr && (MyBoardMapping[rowFinal][colFinal]->GetColor().compare(GetColor())!=0))
         return true;
-
-    return  false;
+    } else
+        return false;
 }
 
+bool Bishop::Capture(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
+    return (MyBoardMapping[rowFinal][colFinal] != nullptr && (MyBoardMapping[rowFinal][colFinal] -> GetColor().compare(GetColor()) != 0));
+}
 
 Bishop::~Bishop() {}

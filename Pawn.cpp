@@ -28,104 +28,59 @@ std::string Pawn::GetColor() const {
     return Color;
 }
 
-void Pawn::SetPosition(unsigned _row, unsigned _col){
+void Pawn::SetPosition(int _row, int _col) {
     Row = _row;
     Col = _col;
 }
 
-unsigned Pawn::GetRow() const {
+int Pawn::GetRow() const {
     return Row;
 }
 
-unsigned Pawn::GetCol() const {
+int Pawn::GetCol() const {
     return Col;
 }
 
-bool Pawn::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal) {
-    if(Color.compare("White") == 0){
-        if(rowFinal != 0){
-            if(colInitial == colFinal){
-                /* Movimiento de peon - Avanzar 2 posiciones en la primera jugada */
-                if((rowInitial == 6) && (rowInitial - rowFinal == 2))
-                    return true;
+bool Pawn::MovePiece(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
 
-                /* Movimiento de abajo hacia en frente */
-                if(((rowInitial - rowFinal)==1))
-                    return true;
-            }
+    /*
+     * Falta considerar promoción de piezas
+     */
 
-            if(colInitial != colFinal){
-                if(rowFinal == (rowInitial - 1)){
-                    // =======================================================================
-                    /* Captura de peon */
-                    if((colInitial!=0) && (colInitial!=7)){
-                        if((colFinal == colInitial +1) || (colFinal == colInitial - 1))
-                            return Capture(MyBoardMapping,  rowFinal, colFinal);
-                    }
+    Piece * tmp = MyBoardMapping[rowFinal][colFinal];
 
-                    /* Movimiento hacia la derecha */
-                    if((colInitial == 0) && (colFinal == colInitial + 1)){
-                        return Capture(MyBoardMapping,  rowFinal, colFinal);
-                    }
+    int increment = (GetColor().compare("White") == 0) ? -1 : 1;
+    int rowTmp = (GetColor().compare("White") == 0) ? 6 : 1;
 
-                    /* Movimiento hacia la izquierda */
-                    if((colInitial == 7) && (colFinal == colInitial - 1)){
-                        return Capture(MyBoardMapping,  rowFinal, colFinal);
-                    }
-                }
-            }
-        }else{
-            /* Condiciones de promocion de pieza */
-            std::cout<<"Promoción de pieza peon Blanca\n"<<std::endl;
-        }
-
-    }else if(Color.compare("Black") == 0){
-        if(rowFinal != 7){
-            if(colInitial == colFinal){
-                /* Movimiento de peon - Avanzar 2 posiciones en la primera jugada */
-                if((rowInitial == 1) && (rowFinal - rowInitial == 2))
-                    return true;
-
-                /* Movimiento de frente hacia abajo */
-                if(((rowFinal - rowInitial)==1))
-                    return true;
-            }
-            if(colInitial != colFinal){
-                if(rowInitial == (rowFinal-1)){
-                    /* Captura de peon */
-                    if((colInitial!=0) && (colInitial!=7)){
-                        if((colFinal + 1 == colInitial) || (colFinal -1 == colInitial))
-                            return Capture(MyBoardMapping, rowFinal, colFinal);
-                    }
-
-                    /* Movimiento hacia la derecha */
-                    if((colInitial == 0) && (colFinal-1 == colInitial)){
-                        return Capture(MyBoardMapping, rowFinal, colFinal);
-                    }
-
-                    /* Movimiento hacia la izquierda */
-                    if((colInitial == 7) && (colFinal+1 == colInitial)){
-                        return Capture(MyBoardMapping, rowFinal, colFinal);
-                    }
-                }
-            }else{
-                return false;
-            }
-        }else{
-            /* Condiciones de promocion de pieza */
-            std::cout<<"Promoción de pieza peon Negra\n"<<std::endl;
-        }
+    // Movimiento normal de peones
+    if ((GetCol() == colFinal) && (GetRow() + increment == rowFinal)) {
+        if (tmp != nullptr)
+            return false;
+        return true;
+        //Movimiento inicial de peones
+    } else if ((GetCol() == colFinal) && (GetRow() == rowTmp) && (rowFinal == (rowTmp + 2 * increment))) {
+        if (tmp != nullptr)
+            return false;
+        tmp = MyBoardMapping[GetRow() + increment][GetCol()];
+        if (tmp != nullptr)
+            return false;
+        return true;
+        //Movimiento de captura
+    } else if (((colFinal == GetCol() + 1) || (colFinal == GetCol() - 1)) && (rowFinal == GetRow() + increment)) {
+        // No hay nada que comer
+        if (tmp == nullptr)
+            return false;
+        //No es ficha rival
+        if (tmp -> GetColor().compare(GetColor()) == 0)
+            return false;
+        return true;
     }
-
     return false;
+
 }
 
-bool Pawn::Capture(Piece *MyBoardMapping[8][8], unsigned rowFinal, unsigned colFinal){
-    if(colFinal != GetCol())
-        if(MyBoardMapping[rowFinal][colFinal]!= nullptr && (MyBoardMapping[rowFinal][colFinal]->GetColor().compare(GetColor())!=0))
-            return true;
-
-    return false;
+bool Pawn::Capture(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
+    return (MyBoardMapping[rowFinal][colFinal] != nullptr && (MyBoardMapping[rowFinal][colFinal] -> GetColor().compare(GetColor()) != 0));
 }
 
 Pawn::~Pawn() {}

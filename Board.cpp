@@ -1,4 +1,5 @@
 #include "Board.h"
+
 #include "ui_Board.h"
 
 Board::Board(QWidget * parent): QWidget(parent), ui(new Ui::Board) {
@@ -56,27 +57,28 @@ void Board::dropEvent(QDropEvent * event) {
         positionX = (event -> pos().x() / 80);
         positionY = (event -> pos().y() / 80);
 
-        std::cout<<"Posicion hacia donde me dirijo ["<<positionY<<","<<positionX<<"]\n";
+        std::cout << "Posicion hacia donde me dirijo [" << positionY << "," << positionX << "]\n";
 
         /* Condicion para no sobreponer piezas */
         /*
          * Mejorar con casos de captuas
          */
-        if(ValidateMovement(ReferentialPositionX, ReferentialPositionY,positionY, positionX))
-        {
-            if(MyBoardMapping[ReferentialPositionX][ReferentialPositionY]->Capture(MyBoardMapping, positionY, positionX)){
+        if (ValidateMovement(ReferentialPositionX, ReferentialPositionY, positionY, positionX)) {
+            if (MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> Capture(MyBoardMapping, positionY, positionX)) {
                 /* Captura de pieza */
-                MyBoardMapping[positionY][positionX]->setVisible(false);
-                std::cout<<"Se capturo la pieza ["<<positionY<<","<<positionX<<"]\n";
+                MyBoardMapping[positionY][positionX] -> setVisible(false);
+                std::cout << "Se capturo la pieza [" << positionY << "," << positionX << "]\n";
                 MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> move(positionX * 80, positionY * 80);
                 MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
+                MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
                 MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
-            }else if(MyBoardMapping[positionY][positionX] == nullptr){
+            } else if (MyBoardMapping[positionY][positionX] == nullptr) {
                 //Mover pieza nueva posicion
                 MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> move(positionX * 80, positionY * 80);
                 MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
+                MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
                 MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
-            }else{
+            } else {
                 return;
             }
             if (event -> source() == this) {
@@ -104,7 +106,7 @@ void Board::mousePressEvent(QMouseEvent * event) {
     ReferentialPositionX = event -> pos().y() / 80;
     ReferentialPositionY = event -> pos().x() / 80;
 
-    std::cout<<"Posicion donde presiono primero ["<<ReferentialPositionX<<","<<ReferentialPositionY<<"]\n";
+    std::cout << "Posicion donde presiono primero [" << ReferentialPositionX << "," << ReferentialPositionY << "]\n";
 
     QByteArray itemData;
     QDataStream dataStream( & itemData, QIODevice::WriteOnly);
@@ -122,9 +124,9 @@ void Board::mousePressEvent(QMouseEvent * event) {
 void Board::InitializeBoard() {
     /* Leer icono */
     BoardIcon.load("../Chess_Final_Project_TO/Images/chess_board.png");
-    for(int i=0;i<8;i++){
-        for(int j=0;j<8;j++){
-            MyBoardMapping [i][j] = nullptr;
+    for (int row = 0; row < 8; row++) {
+        for (int col = 0; col < 8; col++) {
+            MyBoardMapping[row][col] = nullptr;
         }
     }
     /* Inicializar piezas en el tablero */
@@ -184,132 +186,132 @@ void Board::CreationOfPieces() {
     // Piezas negras
     black_rook1 -> move(0, 0);
     black_rook1 -> show();
-    black_rook1->SetPosition(0,0);
+    black_rook1 -> SetPosition(0, 0);
 
     black_rook2 -> move(560, 0);
     black_rook2 -> show();
-    black_rook2 -> SetPosition(0,7);
+    black_rook2 -> SetPosition(0, 7);
 
     black_knight1 -> move(80, 0);
     black_knight1 -> show();
-    black_knight1 -> SetPosition(0,1);
+    black_knight1 -> SetPosition(0, 1);
 
     black_knight2 -> move(480, 0);
     black_knight2 -> show();
-    black_knight2 -> SetPosition(0,6);
+    black_knight2 -> SetPosition(0, 6);
 
     black_bishop1 -> move(160, 0);
     black_bishop1 -> show();
-    black_bishop1 -> SetPosition(0,2);
+    black_bishop1 -> SetPosition(0, 2);
 
     black_bishop2 -> move(400, 0);
     black_bishop2 -> show();
-    black_bishop2 -> SetPosition(0,5);
+    black_bishop2 -> SetPosition(0, 5);
 
     black_king -> move(320, 0);
     black_king -> show();
-    black_king -> SetPosition(0,4);
+    black_king -> SetPosition(0, 4);
 
     black_queen -> move(240, 0);
     black_queen -> show();
-    black_queen -> SetPosition(0,3);
+    black_queen -> SetPosition(0, 3);
 
     black_pawn1 -> move(0, 80);
     black_pawn1 -> show();
-    black_pawn1 -> SetPosition(1,0);
+    black_pawn1 -> SetPosition(1, 0);
 
     black_pawn2 -> move(80, 80);
     black_pawn2 -> show();
-    black_pawn2 -> SetPosition(1,1);
+    black_pawn2 -> SetPosition(1, 1);
 
     black_pawn3 -> move(160, 80);
     black_pawn3 -> show();
-    black_pawn3 -> SetPosition(1,2);
+    black_pawn3 -> SetPosition(1, 2);
 
     black_pawn4 -> move(240, 80);
     black_pawn4 -> show();
-    black_pawn4 -> SetPosition(1,3);
+    black_pawn4 -> SetPosition(1, 3);
 
     black_pawn5 -> move(320, 80);
     black_pawn5 -> show();
-    black_pawn5 -> SetPosition(1,4);
+    black_pawn5 -> SetPosition(1, 4);
 
     black_pawn6 -> move(400, 80);
     black_pawn6 -> show();
-    black_pawn6 -> SetPosition(1,5);
+    black_pawn6 -> SetPosition(1, 5);
 
     black_pawn7 -> move(480, 80);
     black_pawn7 -> show();
-    black_pawn7 -> SetPosition(1,6);
+    black_pawn7 -> SetPosition(1, 6);
 
     black_pawn8 -> move(560, 80);
     black_pawn8 -> show();
-    black_pawn8 -> SetPosition(1,7);
+    black_pawn8 -> SetPosition(1, 7);
 
     // Piezas blancas
     white_rook1 -> move(0, 560);
     white_rook1 -> show();
-    white_rook1 -> SetPosition(7,0);
+    white_rook1 -> SetPosition(7, 0);
 
     white_rook2 -> move(560, 560);
     white_rook2 -> show();
-    white_rook2 -> SetPosition(7,7);
+    white_rook2 -> SetPosition(7, 7);
 
     white_knight1 -> move(80, 560);
     white_knight1 -> show();
-    white_knight1 -> SetPosition(7,1);
+    white_knight1 -> SetPosition(7, 1);
 
     white_knight2 -> move(480, 560);
     white_knight2 -> show();
-    white_knight2 -> SetPosition(7,6);
+    white_knight2 -> SetPosition(7, 6);
 
     white_bishop1 -> move(160, 560);
     white_bishop1 -> show();
-    white_bishop1 -> SetPosition(7,2);
+    white_bishop1 -> SetPosition(7, 2);
 
     white_bishop2 -> move(400, 560);
     white_bishop2 -> show();
-    white_bishop2 -> SetPosition(7,5);
+    white_bishop2 -> SetPosition(7, 5);
 
     white_king -> move(240, 560);
     white_king -> show();
-    white_king -> SetPosition(7,3);
+    white_king -> SetPosition(7, 3);
 
     white_queen -> move(320, 560);
     white_queen -> show();
-    white_queen -> SetPosition(7,4);
+    white_queen -> SetPosition(7, 4);
 
     white_pawn1 -> move(0, 480);
     white_pawn1 -> show();
-    white_pawn1 -> SetPosition(6,0);
+    white_pawn1 -> SetPosition(6, 0);
 
     white_pawn2 -> move(80, 480);
     white_pawn2 -> show();
-    white_pawn2 -> SetPosition(6,1);
+    white_pawn2 -> SetPosition(6, 1);
 
     white_pawn3 -> move(160, 480);
     white_pawn3 -> show();
-    white_pawn3 -> SetPosition(6,2);
+    white_pawn3 -> SetPosition(6, 2);
 
     white_pawn4 -> move(240, 480);
     white_pawn4 -> show();
-    white_pawn4 -> SetPosition(6,3);
+    white_pawn4 -> SetPosition(6, 3);
 
     white_pawn5 -> move(320, 480);
     white_pawn5 -> show();
-    white_pawn5 -> SetPosition(6,4);
+    white_pawn5 -> SetPosition(6, 4);
 
     white_pawn6 -> move(400, 480);
     white_pawn6 -> show();
-    white_pawn6 -> SetPosition(6,5);
+    white_pawn6 -> SetPosition(6, 5);
 
     white_pawn7 -> move(480, 480);
     white_pawn7 -> show();
-    white_pawn7 -> SetPosition(6,6);
+    white_pawn7 -> SetPosition(6, 6);
 
     white_pawn8 -> move(560, 480);
     white_pawn8 -> show();
-    white_pawn8 -> SetPosition(6,7);
+    white_pawn8 -> SetPosition(6, 7);
 
     MappingOfPieces();
 }
@@ -353,52 +355,32 @@ void Board::MappingOfPieces() {
 
 }
 
-bool Board::ValidateMovement(unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal){
+bool Board::ValidateMovement(int rowInitial, int colInitial, int rowFinal, int colFinal) {
 
     auto piecePosition = MyBoardMapping[rowInitial][colInitial];
 
-    if(piecePosition->GetName().compare("Rook") == 0) {
+    if (piecePosition -> GetName().compare("Rook") == 0) {
         //torre
-        return piecePosition->MovePiece(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
+        return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
 
-    }else if(piecePosition->GetName().compare("Knight") == 0){
+    } else if (piecePosition -> GetName().compare("Knight") == 0) {
         //caballo
-        return piecePosition->MovePiece(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
+        return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
 
-    }else if(piecePosition->GetName().compare("Bishop") == 0){
+    } else if (piecePosition -> GetName().compare("Bishop") == 0) {
         //alfil
-        return piecePosition->MovePiece(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
+        return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
 
-    }else if(piecePosition->GetName().compare("Queen") == 0){
+    } else if (piecePosition -> GetName().compare("Queen") == 0) {
         //reina
-        return piecePosition->MovePiece(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
-    }else if(piecePosition->GetName().compare("King") == 0){
+        return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
+    } else if (piecePosition -> GetName().compare("King") == 0) {
         //rey
-        return piecePosition->MovePiece(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
+        return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
 
-    }else if(piecePosition->GetName().compare("Pawn") == 0){
-        return piecePosition->MovePiece(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
+    } else if (piecePosition -> GetName().compare("Pawn") == 0) {
+        return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
     }
 
     return false;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

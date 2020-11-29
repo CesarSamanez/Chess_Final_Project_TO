@@ -28,50 +28,48 @@ std::string Rook::GetColor() const {
     return Color;
 }
 
-void Rook::SetPosition(unsigned _row, unsigned _col){
+void Rook::SetPosition(int _row, int _col) {
     Row = _row;
     Col = _col;
 }
 
-unsigned Rook::GetRow() const {
+int Rook::GetRow() const {
     return Row;
 }
 
-unsigned Rook::GetCol() const {
+int Rook::GetCol() const {
     return Col;
 }
 
-bool Rook::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal) {
-    int rowDifference = rowFinal - rowInitial; //diferencia de filas
-    int colDifference = colFinal - colInitial; //diferencia de columnas
+bool Rook::MovePiece(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
+    Piece * tmp = MyBoardMapping[rowFinal][colFinal];
 
-    if((rowInitial == rowFinal)||(colInitial==colFinal)){
-        if(MyBoardMapping[rowFinal][colFinal]!=nullptr){
-            if(MyBoardMapping[rowFinal][colFinal]->GetColor().compare(GetColor())==0 ){
+    int rowDifference = rowFinal - GetRow(); //diferencia de filas
+    int colDifference = colFinal - GetCol(); //diferencia de columnas
+
+    if ((GetRow() == rowFinal) || (GetCol() == colFinal)) {
+        if (tmp != nullptr) {
+            if (tmp -> GetColor().compare(GetColor()) == 0) {
                 return false;
             }
         }
         /*
          * Validación de movimiento, evitar que salte alguna ficha
          */
-        int diferencia = abs(rowDifference)+abs(colDifference);
-        for(int i=1; i<diferencia;i++ ){
-            Piece* pivot = MyBoardMapping[rowInitial+i*(rowDifference/diferencia)][colInitial+i*(colDifference/diferencia)];
-            if(pivot != nullptr){
+        int diferencia = abs(rowDifference) + abs(colDifference);
+        for (int i = 1; i < diferencia; i++) {
+            tmp = MyBoardMapping[GetRow() + i * (rowDifference / diferencia)][GetCol() + i * (colDifference / diferencia)];
+            if (tmp != nullptr) {
                 return false;
             }
         }
         return true;
-    }
-    else
+    } else
         return false;
 }
 
-bool Rook::Capture(Piece *MyBoardMapping[8][8], unsigned rowFinal, unsigned colFinal){
-    if(MyBoardMapping[rowFinal][colFinal]!= nullptr && (MyBoardMapping[rowFinal][colFinal]->GetColor().compare(GetColor())!=0))
-        return true;
-
-    return false;
+bool Rook::Capture(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
+    return (MyBoardMapping[rowFinal][colFinal] != nullptr && (MyBoardMapping[rowFinal][colFinal] -> GetColor().compare(GetColor()) != 0));
 }
 
 Rook::~Rook() {}

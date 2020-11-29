@@ -41,7 +41,7 @@ public:
     void CreationOfPieces();
     void MappingOfPieces();
 
-    bool ValidateMovement(unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal);
+    bool ValidateMovement(int rowInitial, int colInitial, int rowFinal, int colFinal);
 private:
     /* Icono */
     QPixmap BoardIcon;

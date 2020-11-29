@@ -28,43 +28,40 @@ std::string Queen::GetColor() const {
     return Color;
 }
 
-void Queen::SetPosition(unsigned _row, unsigned _col){
+void Queen::SetPosition(int _row, int _col) {
     Row = _row;
     Col = _col;
 }
 
-unsigned Queen::GetRow() const {
+int Queen::GetRow() const {
     return Row;
 }
 
-unsigned Queen::GetCol() const {
+int Queen::GetCol() const {
     return Col;
 }
 
-bool Queen::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal) {
+bool Queen::MovePiece(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
     /*
      * Queen se mueve como un Alfil
      * Queen se mueve como una Torre
      */
 
-    Rook* tmpRook = new Rook(this, GetColor());
-    tmpRook->SetPosition(GetRow(), GetCol());
+    Rook * tmpRook = new Rook(this, GetColor());
+    tmpRook -> SetPosition(GetRow(), GetCol());
 
-    Bishop* tmpBishop = new Bishop(this, GetColor());
-    tmpBishop->SetPosition(GetRow(), GetCol());
+    Bishop * tmpBishop = new Bishop(this, GetColor());
+    tmpBishop -> SetPosition(GetRow(), GetCol());
 
-    if(tmpRook->MovePiece(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal) ||
-            tmpBishop->MovePiece(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal)){
+    if (tmpRook -> MovePiece(MyBoardMapping, rowFinal, colFinal) ||
+        tmpBishop -> MovePiece(MyBoardMapping, rowFinal, colFinal)) {
         return true;
     }
     return false;
 }
 
-bool Queen::Capture(Piece *MyBoardMapping[8][8], unsigned rowFinal, unsigned colFinal){
-    if(MyBoardMapping[rowFinal][colFinal]!= nullptr && (MyBoardMapping[rowFinal][colFinal]->GetColor().compare(GetColor())!=0))
-        return true;
-
-    return false;
+bool Queen::Capture(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
+    return (MyBoardMapping[rowFinal][colFinal] != nullptr && (MyBoardMapping[rowFinal][colFinal] -> GetColor().compare(GetColor()) != 0));
 }
 
 Queen::~Queen() {}

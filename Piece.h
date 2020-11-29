@@ -20,7 +20,7 @@ protected:
     std::string Color;
     bool Status;
     QPixmap PieceIcon;
-    unsigned Row, Col;
+    int Row, Col;
 
 public:
     /* Constructor explicito */
@@ -30,11 +30,11 @@ public:
     virtual bool GetStatus() const = 0;
     virtual unsigned GetID() const = 0;
     virtual std::string GetColor() const = 0;
-    virtual bool MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal) = 0;
-    virtual bool Capture(Piece *MyBoardMapping[8][8], unsigned rowFinal, unsigned colFinal) = 0;
-    virtual void SetPosition(unsigned _row, unsigned _col) = 0;
-    virtual unsigned GetRow() const = 0;
-    virtual unsigned GetCol() const = 0;
+    virtual bool MovePiece(Piece *MyBoardMapping[8][8], int rowFinal, int colFinal) = 0;
+    virtual bool Capture(Piece *MyBoardMapping[8][8], int rowFinal, int colFinal) = 0;
+    virtual void SetPosition(int _row, int _col) = 0;
+    virtual int GetRow() const = 0;
+    virtual int GetCol() const = 0;
     virtual~Piece() {};
 };
 
