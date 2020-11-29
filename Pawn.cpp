@@ -60,17 +60,17 @@ bool Pawn::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned 
                     /* Captura de peon */
                     if((colInitial!=0) && (colInitial!=7)){
                         if((colFinal == colInitial +1) || (colFinal == colInitial - 1))
-                            return Capture(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
+                            return Capture(MyBoardMapping,  rowFinal, colFinal);
                     }
 
                     /* Movimiento hacia la derecha */
                     if((colInitial == 0) && (colFinal == colInitial + 1)){
-                        return Capture(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
+                        return Capture(MyBoardMapping,  rowFinal, colFinal);
                     }
 
                     /* Movimiento hacia la izquierda */
                     if((colInitial == 7) && (colFinal == colInitial - 1)){
-                        return Capture(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
+                        return Capture(MyBoardMapping,  rowFinal, colFinal);
                     }
                 }
             }
@@ -95,17 +95,17 @@ bool Pawn::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned 
                     /* Captura de peon */
                     if((colInitial!=0) && (colInitial!=7)){
                         if((colFinal + 1 == colInitial) || (colFinal -1 == colInitial))
-                            return Capture(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
+                            return Capture(MyBoardMapping, rowFinal, colFinal);
                     }
 
                     /* Movimiento hacia la derecha */
                     if((colInitial == 0) && (colFinal-1 == colInitial)){
-                        return Capture(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
+                        return Capture(MyBoardMapping, rowFinal, colFinal);
                     }
 
                     /* Movimiento hacia la izquierda */
                     if((colInitial == 7) && (colFinal+1 == colInitial)){
-                        return Capture(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal);
+                        return Capture(MyBoardMapping, rowFinal, colFinal);
                     }
                 }
             }else{
@@ -120,8 +120,8 @@ bool Pawn::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned 
     return false;
 }
 
-bool Pawn::Capture(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal){
-    if(colFinal != colInitial){
+bool Pawn::Capture(Piece *MyBoardMapping[8][8], unsigned rowFinal, unsigned colFinal){
+    if(colFinal != GetCol()){
         if(Color.compare("White") == 0){
             if((MyBoardMapping[rowFinal][colFinal] != nullptr) && (MyBoardMapping[rowFinal][colFinal]->GetColor().compare("Black") == 0))
                 return true;

@@ -64,7 +64,7 @@ void Board::dropEvent(QDropEvent * event) {
          */
         if(ValidateMovement(ReferentialPositionX, ReferentialPositionY,positionY, positionX))
         {
-            if(MyBoardMapping[ReferentialPositionX][ReferentialPositionY]->Capture(MyBoardMapping, ReferentialPositionX, ReferentialPositionY, positionY, positionX)){
+            if(MyBoardMapping[ReferentialPositionX][ReferentialPositionY]->Capture(MyBoardMapping, positionY, positionX)){
                 /* Captura de pieza */
                 MyBoardMapping[positionY][positionX]->setVisible(false);
                 std::cout<<"Se capturo la pieza ["<<positionY<<","<<positionX<<"]\n";

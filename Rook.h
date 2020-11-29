@@ -14,7 +14,7 @@ public:
     unsigned GetRow() const;
     unsigned GetCol() const;
     bool MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal);
-    bool Capture(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal);
+    bool Capture(Piece *MyBoardMapping[8][8], unsigned rowFinal, unsigned colFinal);
     ~Rook();
 };
 

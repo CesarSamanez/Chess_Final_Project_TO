@@ -49,7 +49,7 @@ bool King::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned 
         if((resFil <=1) && (resCol<= 1)){
             if(MyBoardMapping[rowFinal][colFinal]!=nullptr){
                 if(MyBoardMapping[rowFinal][colFinal]->GetColor().compare(this->GetColor())!=0){
-                    return Capture(MyBoardMapping,rowInitial,colInitial,rowFinal,colFinal);
+                    return Capture(MyBoardMapping, rowFinal,colFinal);
                 }else{
                     return false;
                 }
@@ -61,7 +61,7 @@ bool King::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned 
         if((resFil <=1) && (resCol<= 1)){
             if(MyBoardMapping[rowFinal][colFinal]!=nullptr){
                 if(MyBoardMapping[rowFinal][colFinal]->GetColor().compare(this->GetColor())!=0){
-                    return Capture(MyBoardMapping,rowInitial,colInitial,rowFinal,colFinal);
+                    return Capture(MyBoardMapping, rowFinal,colFinal);
                 }else{
                     return false;
                 }
@@ -74,7 +74,7 @@ bool King::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned 
     return false;
 }
 
-bool King::Capture(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal){
+bool King::Capture(Piece *MyBoardMapping[8][8], unsigned rowFinal, unsigned colFinal){
     if(Color.compare("White")==0){
         if((MyBoardMapping[rowFinal][colFinal]!=nullptr) && (MyBoardMapping[rowFinal][colFinal]->GetColor().compare("Black")==0)){
             return  true;

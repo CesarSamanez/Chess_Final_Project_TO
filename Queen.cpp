@@ -49,7 +49,7 @@ bool Queen::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned
         if((resfil==rescol) || (rowInitial==rowFinal)||(colInitial==colFinal)){
             if(MyBoardMapping[rowFinal][colFinal]!=nullptr){ // si hay ficha para comer
                 if(MyBoardMapping[rowFinal][colFinal]->GetColor().compare(this->GetColor())!=0){
-                    return Capture(MyBoardMapping, rowInitial,colInitial, rowFinal,colFinal);
+                    return Capture(MyBoardMapping, rowFinal,colFinal);
                 }else{
                     return false;
                 }
@@ -62,7 +62,7 @@ bool Queen::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned
         if((resfil==rescol) || (rowInitial==rowFinal)||(colInitial==colFinal)){
             if(MyBoardMapping[rowFinal][colFinal]!=nullptr){ // si hay ficha para comer
                 if(MyBoardMapping[rowFinal][colFinal]->GetColor().compare(this->GetColor())!=0){
-                    return Capture(MyBoardMapping, rowInitial,colInitial, rowFinal,colFinal);
+                    return Capture(MyBoardMapping, rowFinal,colFinal);
                 }else{
                     return false;
                 }
@@ -75,7 +75,7 @@ bool Queen::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned
     return false;
 }
 
-bool Queen::Capture(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal){
+bool Queen::Capture(Piece *MyBoardMapping[8][8], unsigned rowFinal, unsigned colFinal){
     if(Color.compare("White")==0){
         if((MyBoardMapping[rowFinal][colFinal]!=nullptr) && (MyBoardMapping[rowFinal][colFinal]->GetColor().compare("Black")==0)){
             return  true;
