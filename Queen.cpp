@@ -42,49 +42,28 @@ unsigned Queen::GetCol() const {
 }
 
 bool Queen::MovePiece(Piece *MyBoardMapping[8][8], unsigned rowInitial, unsigned colInitial, unsigned rowFinal, unsigned colFinal) {
-    int resfil = abs((int)rowInitial - (int)rowFinal); //resta de filas
-    int rescol = abs((int)colInitial - (int)colFinal); // resta de columnas
+    /*
+     * Queen se mueve como un Alfil
+     * Queen se mueve como una Torre
+     */
 
-    if(Color.compare("White")==0){
-        if((resfil==rescol) || (rowInitial==rowFinal)||(colInitial==colFinal)){
-            if(MyBoardMapping[rowFinal][colFinal]!=nullptr){ // si hay ficha para comer
-                if(MyBoardMapping[rowFinal][colFinal]->GetColor().compare(this->GetColor())!=0){
-                    return Capture(MyBoardMapping, rowFinal,colFinal);
-                }else{
-                    return false;
-                }
-            }
+    Rook* tmpRook = new Rook(this, GetColor());
+    tmpRook->SetPosition(GetRow(), GetCol());
 
-            //validar movimiento
-            return true;
-        }
-    }else if(Color.compare("Black")==0){
-        if((resfil==rescol) || (rowInitial==rowFinal)||(colInitial==colFinal)){
-            if(MyBoardMapping[rowFinal][colFinal]!=nullptr){ // si hay ficha para comer
-                if(MyBoardMapping[rowFinal][colFinal]->GetColor().compare(this->GetColor())!=0){
-                    return Capture(MyBoardMapping, rowFinal,colFinal);
-                }else{
-                    return false;
-                }
-            }
+    Bishop* tmpBishop = new Bishop(this, GetColor());
+    tmpBishop->SetPosition(GetRow(), GetCol());
 
-            //validar movimiento
-            return true;
-        }
+    if(tmpRook->MovePiece(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal) ||
+            tmpBishop->MovePiece(MyBoardMapping, rowInitial, colInitial, rowFinal, colFinal)){
+        return true;
     }
     return false;
 }
 
 bool Queen::Capture(Piece *MyBoardMapping[8][8], unsigned rowFinal, unsigned colFinal){
-    if(Color.compare("White")==0){
-        if((MyBoardMapping[rowFinal][colFinal]!=nullptr) && (MyBoardMapping[rowFinal][colFinal]->GetColor().compare("Black")==0)){
-            return  true;
-        }
-    }else if (Color.compare("Black")==0){
-        if((MyBoardMapping[rowFinal][colFinal]!=nullptr) && (MyBoardMapping[rowFinal][colFinal]->GetColor().compare("White")==0)){
-            return  true;
-        }
-    }
+    if(MyBoardMapping[rowFinal][colFinal]!= nullptr && (MyBoardMapping[rowFinal][colFinal]->GetColor().compare(GetColor())!=0))
+        return true;
+
     return false;
 }
 

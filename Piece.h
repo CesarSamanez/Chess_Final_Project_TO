@@ -4,7 +4,7 @@
 #include <QLabel>
 #include <QPixmap>
 #include <iostream>
-#include <string>
+#include <cmath>
 
 namespace Ui {
 class Piece;
