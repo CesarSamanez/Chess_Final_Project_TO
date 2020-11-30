@@ -5,16 +5,13 @@
 #include <QPixmap>
 #include <iostream>
 #include <cmath>
-
-namespace Ui {
-class Piece;
-}
+#include <vector>
 
 class Piece: public QLabel {
     Q_OBJECT
 
 protected:
-    Ui::Piece * ui;
+    Piece * ui;
 
     unsigned ID;
     std::string Color;
@@ -32,6 +29,7 @@ public:
     virtual std::string GetColor() const = 0;
     virtual bool MovePiece(Piece *MyBoardMapping[8][8], int rowFinal, int colFinal) = 0;
     virtual bool Capture(Piece *MyBoardMapping[8][8], int rowFinal, int colFinal) = 0;
+    virtual std::vector<std::pair<int,int>> PossibleMoves(Piece *MyBoardMapping[8][8]) = 0;
     virtual void SetPosition(int _row, int _col) = 0;
     virtual int GetRow() const = 0;
     virtual int GetCol() const = 0;

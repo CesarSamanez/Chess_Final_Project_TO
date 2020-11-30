@@ -26,7 +26,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
-file(GLOB files "*.cpp" "*.h" "*.ui" "*.qrc")
+file(GLOB files "*.cpp" "*.h" "*.ui")
 
 if(ANDROID)
   add_library(Chess_Final_Project_TO SHARED

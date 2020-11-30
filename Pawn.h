@@ -2,6 +2,7 @@
 #define PAWN_H
 
 #include "Piece.h"
+#include "Movement.h"
 
 class Pawn: public Piece {
 public:
@@ -15,6 +16,9 @@ public:
     int GetCol() const;
     bool MovePiece(Piece *MyBoardMapping[8][8], int rowFinal, int colFinal);
     bool Capture(Piece *MyBoardMapping[8][8], int rowFinal, int colFinal);
+
+    std::vector<std::pair<int,int>> PossibleMoves(Piece *MyBoardMapping[8][8]);
+
     ~Pawn();
 };
 

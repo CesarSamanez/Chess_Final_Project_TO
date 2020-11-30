@@ -4,7 +4,6 @@
 
 Board::Board(QWidget * parent): QWidget(parent), ui(new Ui::Board) {
     ui -> setupUi(this);
-
     /* Siempre declarar para que funcione */
     setAcceptDrops(true);
 
@@ -12,117 +11,8 @@ Board::Board(QWidget * parent): QWidget(parent), ui(new Ui::Board) {
     InitializeBoard();
 }
 
-Board::~Board() {
-    delete ui;
-}
-
-void Board::paintEvent(QPaintEvent * ) {
-    QPainter painter(this);
-    painter.drawPixmap(0, 0, width(), height(), BoardIcon);
-
-}
-
-void Board::dragEnterEvent(QDragEnterEvent * event) {
-    if (event -> mimeData() -> hasFormat("application/x-dnditemdata")) {
-        if (event -> source() == this) {
-            event -> setDropAction(Qt::MoveAction);
-            event -> accept();
-        } else {
-            event -> acceptProposedAction();
-        }
-    } else {
-        event -> ignore();
-    }
-}
-
-void Board::dragMoveEvent(QDragMoveEvent * event) {
-    if (event -> mimeData() -> hasFormat("application/x-dnditemdata")) {
-        if (event -> source() == this) {
-            event -> setDropAction(Qt::MoveAction);
-            event -> accept();
-        } else {
-            event -> acceptProposedAction();
-        }
-    } else {
-        event -> ignore();
-    }
-}
-
-void Board::dropEvent(QDropEvent * event) {
-    if (event -> mimeData() -> hasFormat("application/x-dnditemdata")) {
-        QByteArray itemData = event -> mimeData() -> data("application/x-dnditemdata");
-        QDataStream dataStream( & itemData, QIODevice::ReadOnly);
-
-        /* Recalcular posicion para centrar la pieza */
-        positionX = (event -> pos().x() / 80);
-        positionY = (event -> pos().y() / 80);
-
-        std::cout << "Posicion hacia donde me dirijo [" << positionY << "," << positionX << "]\n";
-
-        /* Condicion para no sobreponer piezas */
-        /*
-         * Mejorar con casos de captuas
-         */
-        if (ValidateMovement(ReferentialPositionX, ReferentialPositionY, positionY, positionX)) {
-            if (MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> Capture(MyBoardMapping, positionY, positionX)) {
-                /* Captura de pieza */
-                MyBoardMapping[positionY][positionX] -> setVisible(false);
-                std::cout << "Se capturo la pieza [" << positionY << "," << positionX << "]\n";
-                MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> move(positionX * 80, positionY * 80);
-                MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
-                MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
-                MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
-            } else if (MyBoardMapping[positionY][positionX] == nullptr) {
-                //Mover pieza nueva posicion
-                MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> move(positionX * 80, positionY * 80);
-                MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
-                MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
-                MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
-            } else {
-                return;
-            }
-            if (event -> source() == this) {
-                event -> setDropAction(Qt::MoveAction);
-                event -> accept();
-            } else {
-                event -> acceptProposedAction();
-            }
-        } else {
-            event -> ignore();
-        }
-
-    } else {
-        return;
-    }
-
-}
-
-void Board::mousePressEvent(QMouseEvent * event) {
-    auto child = childAt(event -> pos());
-    if (child == nullptr) {
-        return;
-    }
-
-    ReferentialPositionX = event -> pos().y() / 80;
-    ReferentialPositionY = event -> pos().x() / 80;
-
-    std::cout << "Posicion donde presiono primero [" << ReferentialPositionX << "," << ReferentialPositionY << "]\n";
-
-    QByteArray itemData;
-    QDataStream dataStream( & itemData, QIODevice::WriteOnly);
-    dataStream << QPoint(event -> pos() - child -> pos());
-
-    QMimeData * mimeData = new QMimeData();
-    mimeData -> setData("application/x-dnditemdata", itemData);
-
-    QDrag * drag = new QDrag(this);
-    drag -> setMimeData(mimeData);
-
-    drag -> exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
-}
-
 void Board::InitializeBoard() {
-    /* Leer icono */
+    // Imagen del tablero
     BoardIcon.load("../Chess_Final_Project_TO/Images/chess_board.png");
     for (int row = 0; row < 8; row++) {
         for (int col = 0; col < 8; col++) {
@@ -358,29 +248,166 @@ void Board::MappingOfPieces() {
 bool Board::ValidateMovement(int rowInitial, int colInitial, int rowFinal, int colFinal) {
 
     auto piecePosition = MyBoardMapping[rowInitial][colInitial];
+    std::vector < std::pair < int, int >> misMovimientos;
 
+    misMovimientos = piecePosition -> PossibleMoves(MyBoardMapping);
+    DrawMovements(misMovimientos);
+
+    piecePosition -> PossibleMoves(MyBoardMapping);
     if (piecePosition -> GetName().compare("Rook") == 0) {
-        //torre
         return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
-
     } else if (piecePosition -> GetName().compare("Knight") == 0) {
-        //caballo
         return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
-
     } else if (piecePosition -> GetName().compare("Bishop") == 0) {
-        //alfil
         return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
-
     } else if (piecePosition -> GetName().compare("Queen") == 0) {
-        //reina
         return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
     } else if (piecePosition -> GetName().compare("King") == 0) {
-        //rey
         return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
-
     } else if (piecePosition -> GetName().compare("Pawn") == 0) {
         return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
     }
-
     return false;
+}
+
+void Board::DrawMovements(std::vector < std::pair < int, int > > _movements) {
+    //Limpiar movimientos ficha anterior
+    RemoveDrawnMovements();
+
+    for (size_t i = 0; i < _movements.size(); i++) {
+        QLabel * aux = new QLabel(this);
+        aux -> setStyleSheet("QLabel { border-radius : 10px ; background-color : #FFA133; }");
+        aux -> setGeometry((_movements[i].second * 80 + 30), (_movements[i].first * 80 + 30), 20, 20);
+        aux -> setEnabled(false);
+        aux -> show();
+        movementsInBoard.push_back(aux);
+    }
+}
+
+void Board::RemoveDrawnMovements() {
+    for (size_t i = 0; i < movementsInBoard.size(); i++) {
+        movementsInBoard[i] -> ~QLabel();
+    }
+    movementsInBoard.clear();
+}
+
+bool Board::isAdvertenceWidget() {
+    for (size_t i = 0; i < movementsInBoard.size(); i++) {
+        if (movementsInBoard[i] -> y() == ReferentialPositionX * 80 + 30 && movementsInBoard[i] -> x() == ReferentialPositionY * 80 + 30) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void Board::paintEvent(QPaintEvent * ) {
+    QPainter painter(this);
+    painter.drawPixmap(0, 0, width(), height(), BoardIcon);
+
+}
+
+void Board::dragEnterEvent(QDragEnterEvent * event) {
+    if (event -> mimeData() -> hasFormat("application/x-dnditemdata")) {
+        if (event -> source() == this) {
+            event -> setDropAction(Qt::MoveAction);
+            event -> accept();
+        } else {
+            event -> acceptProposedAction();
+        }
+    } else {
+        event -> ignore();
+    }
+}
+
+void Board::dragMoveEvent(QDragMoveEvent * event) {
+    if (event -> mimeData() -> hasFormat("application/x-dnditemdata")) {
+        if (event -> source() == this) {
+            event -> setDropAction(Qt::MoveAction);
+            event -> accept();
+        } else {
+            event -> acceptProposedAction();
+        }
+    } else {
+        event -> ignore();
+    }
+}
+
+void Board::dropEvent(QDropEvent * event) {
+    if (event -> mimeData() -> hasFormat("application/x-dnditemdata")) {
+        QByteArray itemData = event -> mimeData() -> data("application/x-dnditemdata");
+        QDataStream dataStream( & itemData, QIODevice::ReadOnly);
+
+        /* Recalcular posicion para centrar la pieza */
+        positionX = (event -> pos().x() / 80);
+        positionY = (event -> pos().y() / 80);
+
+        std::cout << "Posicion hacia donde me dirijo [" << positionY << "," << positionX << "]\n";
+
+        /* Condicion para no sobreponer piezas */
+        /*
+         * Mejorar con casos de captuas
+         */
+        if (ValidateMovement(ReferentialPositionX, ReferentialPositionY, positionY, positionX)) {
+            if (MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> Capture(MyBoardMapping, positionY, positionX)) {
+                /* Captura de pieza */
+                MyBoardMapping[positionY][positionX] -> setVisible(false);
+                std::cout << "Se capturo la pieza [" << positionY << "," << positionX << "]\n";
+                MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> move(positionX * 80, positionY * 80);
+                MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
+                MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
+                MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
+            } else if (MyBoardMapping[positionY][positionX] == nullptr) {
+                //Mover pieza nueva posicion
+                MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> move(positionX * 80, positionY * 80);
+                MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
+                MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
+                MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
+            } else {
+                return;
+            }
+            if (event -> source() == this) {
+                event -> setDropAction(Qt::MoveAction);
+                event -> accept();
+                RemoveDrawnMovements();
+            } else {
+                event -> acceptProposedAction();
+            }
+        } else {
+            event -> ignore();
+        }
+
+    } else {
+        return;
+    }
+
+}
+
+void Board::mousePressEvent(QMouseEvent * event) {
+    auto child = childAt(event -> pos());
+
+    ReferentialPositionX = event -> pos().y() / 80;
+    ReferentialPositionY = event -> pos().x() / 80;
+
+    if (child == nullptr || isAdvertenceWidget()) {
+        return;
+    }
+
+    std::cout << "Posicion donde presiono primero [" << ReferentialPositionX << "," << ReferentialPositionY << "]\n";
+    // EliminaMovimientosGraficados();
+
+    QByteArray itemData;
+    QDataStream dataStream( & itemData, QIODevice::WriteOnly);
+    dataStream << QPoint(event -> pos() - child -> pos());
+
+    QMimeData * mimeData = new QMimeData();
+    mimeData -> setData("application/x-dnditemdata", itemData);
+
+    QDrag * drag = new QDrag(this);
+    drag -> setMimeData(mimeData);
+
+    drag -> exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
+}
+
+Board::~Board() {
+    delete ui;
 }

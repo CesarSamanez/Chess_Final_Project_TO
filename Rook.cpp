@@ -68,6 +68,17 @@ bool Rook::MovePiece(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
         return false;
 }
 
+std::vector<std::pair<int, int> > Rook::PossibleMoves(Piece *MyBoardMapping[8][8]){
+    std::vector<std::pair<int, int>> movements;
+
+    for(int i=0; i< 8; i++)
+        for(int j=0;j<8;j++)
+            if(MovePiece(MyBoardMapping, i, j))
+                movements.push_back(std::pair(i,j));
+
+    return movements;
+}
+
 bool Rook::Capture(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
     return (MyBoardMapping[rowFinal][colFinal] != nullptr && (MyBoardMapping[rowFinal][colFinal] -> GetColor().compare(GetColor()) != 0));
 }
