@@ -2,7 +2,6 @@
 #define KING_H
 
 #include "Piece.h"
-#include "Movement.h"
 
 class King: public Piece {
 public:

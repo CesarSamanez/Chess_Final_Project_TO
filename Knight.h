@@ -2,7 +2,6 @@
 #define KNIGHT_H
 
 #include "Piece.h"
-#include "Movement.h"
 
 class Knight: public Piece {
 public:

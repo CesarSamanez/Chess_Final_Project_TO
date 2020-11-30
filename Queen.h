@@ -4,7 +4,6 @@
 #include "Piece.h"
 #include "Rook.h"
 #include "Bishop.h"
-#include "Movement.h"
 
 class Queen: public Piece {
 public:

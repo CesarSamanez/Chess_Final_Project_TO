@@ -2,7 +2,6 @@
 #define ROOK_H
 
 #include "Piece.h"
-#include "Movement.h"
 
 class Rook: public Piece {
 public:
