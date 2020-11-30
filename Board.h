@@ -43,6 +43,8 @@ public:
 
     bool ValidateMovement(int rowInitial, int colInitial, int rowFinal, int colFinal);
     void DrawMovements(std::vector<std::pair<int, int>> movements);
+    void Check(Piece *piece);
+    void ChekMate(Piece *piece);
     void RemoveDrawnMovements();
 private:
     /* Icono */

@@ -252,10 +252,10 @@ bool Board::ValidateMovement(int rowInitial, int colInitial, int rowFinal, int c
 
     misMovimientos = piecePosition -> PossibleMoves(MyBoardMapping);
     DrawMovements(misMovimientos);
-
     piecePosition -> PossibleMoves(MyBoardMapping);
     if (piecePosition -> GetName().compare("Rook") == 0) {
         return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
+
     } else if (piecePosition -> GetName().compare("Knight") == 0) {
         return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
     } else if (piecePosition -> GetName().compare("Bishop") == 0) {
@@ -267,9 +267,28 @@ bool Board::ValidateMovement(int rowInitial, int colInitial, int rowFinal, int c
     } else if (piecePosition -> GetName().compare("Pawn") == 0) {
         return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
     }
+
     return false;
 }
 
+void Board::Check(Piece *piece){
+
+    if(piece->GetName().compare("King")!=0){
+        std::vector < std::pair < int, int >> futMovements; //futuros movimientos
+        futMovements = piece->PossibleMoves(MyBoardMapping);
+        for(size_t i=0; i< futMovements.size();i++){
+            if(piece->GetColor().compare("White")==0){
+                if((futMovements[i].first == black_king->GetRow()) && (futMovements[i].second==black_king->GetCol())){
+                    std::cout<< "Jaque pos ["<<futMovements[i].first <<"," << futMovements[i].second<<"]\n";
+                }
+            }else if(piece->GetColor().compare("Black")==0){
+                if((futMovements[i].first == white_king->GetRow()) && (futMovements[i].second==white_king->GetCol())){
+                    std::cout<< "Jaque pos ["<<futMovements[i].first <<"," << futMovements[i].second<<"]\n";
+                }
+            }
+        }
+    }
+}
 void Board::DrawMovements(std::vector < std::pair < int, int > > _movements) {
     //Limpiar movimientos ficha anterior
     RemoveDrawnMovements();
@@ -348,6 +367,8 @@ void Board::dropEvent(QDropEvent * event) {
          * Mejorar con casos de captuas
          */
         if (ValidateMovement(ReferentialPositionX, ReferentialPositionY, positionY, positionX)) {
+                /*Check Jaque*/
+
             if (MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> Capture(MyBoardMapping, positionY, positionX)) {
                 /* Captura de pieza */
                 MyBoardMapping[positionY][positionX] -> setVisible(false);
@@ -355,6 +376,7 @@ void Board::dropEvent(QDropEvent * event) {
                 MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> move(positionX * 80, positionY * 80);
                 MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
                 MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
+                Check(MyBoardMapping[positionY][positionX]);//chequea jaque
                 MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
             } else if (MyBoardMapping[positionY][positionX] == nullptr) {
                 //Mover pieza nueva posicion
@@ -362,6 +384,8 @@ void Board::dropEvent(QDropEvent * event) {
                 MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
                 MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
                 MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
+                //chequear jaque de la nueva posicion
+                Check(MyBoardMapping[positionY][positionX]);
             } else {
                 return;
             }
