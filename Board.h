@@ -45,6 +45,7 @@ public:
     void DrawMovements(std::vector<std::pair<int, int>> movements);
     void Check(Piece *piece);
     void ChekMate(Piece *piece);
+    void DeadPosition();
     void RemoveDrawnMovements();
 private:
     /* Icono */

@@ -289,6 +289,33 @@ void Board::Check(Piece *piece){
         }
     }
 }
+
+void Board::ChekMate(Piece *piece){
+    if(piece->GetName().compare("King")==0){
+        QMessageBox message;
+        message.setText("Jaque Mate");
+        message.exec();
+        std::cout << "Jaque mate\n";
+        exit(1); //reemplazo por menu de inicio
+    }
+}
+
+void Board::DeadPosition(){
+    int count =0;
+    for(size_t i=0; i< 8; i++){
+        for(size_t j=0; j<8;j++){
+            if(MyBoardMapping[i][j]!=nullptr ){
+                if(MyBoardMapping[i][j]->GetName().compare("King")!=0){
+                    count ++;
+                }
+            }
+        }
+    }
+
+    if(count == 0){
+        std::cout << "Tablas"<< std::endl;
+    }
+}
 void Board::DrawMovements(std::vector < std::pair < int, int > > _movements) {
     //Limpiar movimientos ficha anterior
     RemoveDrawnMovements();
@@ -367,12 +394,11 @@ void Board::dropEvent(QDropEvent * event) {
          * Mejorar con casos de captuas
          */
         if (ValidateMovement(ReferentialPositionX, ReferentialPositionY, positionY, positionX)) {
-                /*Check Jaque*/
-
-            if (MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> Capture(MyBoardMapping, positionY, positionX)) {
+              if (MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> Capture(MyBoardMapping, positionY, positionX)) {
                 /* Captura de pieza */
                 MyBoardMapping[positionY][positionX] -> setVisible(false);
                 std::cout << "Se capturo la pieza [" << positionY << "," << positionX << "]\n";
+                ChekMate(MyBoardMapping[positionY][positionX]); //validar JaqueMate
                 MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> move(positionX * 80, positionY * 80);
                 MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
                 MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
@@ -400,6 +426,7 @@ void Board::dropEvent(QDropEvent * event) {
             event -> ignore();
         }
 
+        DeadPosition();
     } else {
         return;
     }
