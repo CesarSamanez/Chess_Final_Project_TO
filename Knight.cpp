@@ -5,10 +5,8 @@ Knight::Knight(QWidget * parent, const std::string _color): Piece(parent, _color
         PieceIcon.load("../Chess_Final_Project_TO/Images/white_knight.png");
     } else if (Color.compare("Black") == 0) {
         PieceIcon.load("../Chess_Final_Project_TO/Images/black_knight.png");
-    } else {
-        std::cout << "Invalid color" << std::endl;
-        return;
     }
+
     this -> setPixmap(PieceIcon.scaled(QSize(80, 80), Qt::KeepAspectRatio));
 }
 

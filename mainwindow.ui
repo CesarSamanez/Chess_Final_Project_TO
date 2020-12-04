@@ -1757,14 +1757,9 @@ color: rgb(238, 238, 210);</string>
      <x>0</x>
      <y>0</y>
      <width>1108</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuReiniciar">
-    <property name="title">
-     <string>Iniciar Juego</string>
-    </property>
-   </widget>
    <widget class="QMenu" name="menuAcerca_De">
     <property name="title">
      <string>Reiniciar</string>
@@ -1775,7 +1770,6 @@ color: rgb(238, 238, 210);</string>
      <string>Acerca de</string>
     </property>
    </widget>
-   <addaction name="menuReiniciar"/>
    <addaction name="menuAcerca_De"/>
    <addaction name="menuAcerca_de"/>
   </widget>

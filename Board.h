@@ -23,7 +23,6 @@
 #include "Queen.h"
 #include "Pawn.h"
 
-
 namespace Ui {
 class Board;
 }
@@ -37,16 +36,18 @@ public:
 
     void paintEvent(QPaintEvent * event) override;
     void InitializeBoard();
-    void InitializePieces();
-    void CreationOfPieces();
+    void PositionPiecesInBoard();
     void MappingOfPieces();
 
     bool ValidateMovement(const int& rowInitial, const int& colInitial, const int& rowFinal, const int& colFinal);
+    //Valida que no es una ficha de ajedrez
+    bool isAdvertenceWidget();
     void DrawMovements(const std::vector<std::pair<int, int>>& movements);
     void Check(const Piece *piece);
     void ChekMate(const Piece *piece);
     void DeadPosition();
     void RemoveDrawnMovements();
+
 private:
     /* Icono */
     QPixmap BoardIcon;
@@ -58,45 +59,42 @@ private:
     /* Mapear tablero */
     Piece *MyBoardMapping[8][8];
 
-    Piece * black_rook1;
-    Piece * black_rook2;
-    Piece * black_knight1;
-    Piece * black_knight2;
-    Piece * black_bishop1;
-    Piece * black_bishop2;
-    Piece * black_king;
-    Piece * black_queen;
-    Piece * black_pawn1;
-    Piece * black_pawn2;
-    Piece * black_pawn3;
-    Piece * black_pawn4;
-    Piece * black_pawn5;
-    Piece * black_pawn6;
-    Piece * black_pawn7;
-    Piece * black_pawn8;
+    Piece * black_rook1 = new Rook(this, "Black");
+    Piece * black_rook2 = new Rook(this, "Black");
+    Piece * black_knight1 = new Knight(this, "Black");
+    Piece * black_knight2 = new Knight(this, "Black");
+    Piece * black_bishop1 = new Bishop(this, "Black");
+    Piece * black_bishop2 = new Bishop(this, "Black");
+    Piece * black_king = new King(this, "Black");
+    Piece * black_queen = new Queen(this, "Black");
+    Piece * black_pawn1 = new Pawn(this, "Black");
+    Piece * black_pawn2 = new Pawn(this, "Black");
+    Piece * black_pawn3 = new Pawn(this, "Black");
+    Piece * black_pawn4 = new Pawn(this, "Black");
+    Piece * black_pawn5 = new Pawn(this, "Black");
+    Piece * black_pawn6 = new Pawn(this, "Black");
+    Piece * black_pawn7 = new Pawn(this, "Black");
+    Piece * black_pawn8 = new Pawn(this, "Black");
 
-    Piece * white_rook1;
-    Piece * white_rook2;
-    Piece * white_knight1;
-    Piece * white_knight2;
-    Piece * white_bishop1;
-    Piece * white_bishop2;
-    Piece * white_king;
-    Piece * white_queen;
-    Piece * white_pawn1;
-    Piece * white_pawn2;
-    Piece * white_pawn3;
-    Piece * white_pawn4;
-    Piece * white_pawn5;
-    Piece * white_pawn6;
-    Piece * white_pawn7;
-    Piece * white_pawn8;
+    Piece * white_rook1 = new Rook(this, "White");
+    Piece * white_rook2 = new Rook(this, "White");
+    Piece * white_knight1 = new Knight(this, "White");
+    Piece * white_knight2 = new Knight(this, "White");
+    Piece * white_bishop1 = new Bishop(this, "White");
+    Piece * white_bishop2 = new Bishop(this, "White");
+    Piece * white_king = new King(this, "White");
+    Piece * white_queen = new Queen(this, "White");
+    Piece * white_pawn1 = new Pawn(this, "White");
+    Piece * white_pawn2 = new Pawn(this, "White");
+    Piece * white_pawn3 = new Pawn(this, "White");
+    Piece * white_pawn4 = new Pawn(this, "White");
+    Piece * white_pawn5 = new Pawn(this, "White");
+    Piece * white_pawn6 = new Pawn(this, "White");
+    Piece * white_pawn7 = new Pawn(this, "White");
+    Piece * white_pawn8 = new Pawn(this, "White");
 
     // Vector de posibles movimientos
-    std::vector<QLabel*> movementsInBoard;
-
-    //Valida que no es una ficha de ajedrez
-    bool isAdvertenceWidget();
+    std::vector<QLabel*> posibbleMovementsInBoard;
 
     void mousePressEvent(QMouseEvent * event) override;
     void dragEnterEvent(QDragEnterEvent * event) override;

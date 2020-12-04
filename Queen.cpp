@@ -5,10 +5,8 @@ Queen::Queen(QWidget * parent, const std::string _color): Piece(parent, _color) 
         PieceIcon.load("../Chess_Final_Project_TO/Images/white_queen.png");
     } else if (Color.compare("Black") == 0) {
         PieceIcon.load("../Chess_Final_Project_TO/Images/black_queen.png");
-    } else {
-        std::cout << "Invalid color" << std::endl;
-        return;
     }
+
     this -> setPixmap(PieceIcon.scaled(QSize(80, 80), Qt::KeepAspectRatio));
 }
 
@@ -42,20 +40,20 @@ int Queen::GetCol() const {
 }
 
 bool Queen::MovePiece(Piece * MyBoardMapping[8][8], const int& rowFinal, const int& colFinal) const{
+
     /*
      * Queen se mueve como un Alfil
      * Queen se mueve como una Torre
      */
 
-    Piece * tmpRook = nullptr;
+    Piece * tmpRook = new Rook(parentWidget(), GetColor());
     tmpRook -> SetPosition(GetRow(), GetCol());
 
-
-    Piece * tmpBishop = nullptr;
+    Piece * tmpBishop = new Bishop(parentWidget(), GetColor());
     tmpBishop -> SetPosition(GetRow(), GetCol());
 
     if (tmpRook -> MovePiece(MyBoardMapping, rowFinal, colFinal) ||
-        tmpBishop -> MovePiece(MyBoardMapping, rowFinal, colFinal)) {
+            tmpBishop -> MovePiece(MyBoardMapping, rowFinal, colFinal)) {
         return true;
     }
     return false;

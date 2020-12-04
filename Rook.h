@@ -5,7 +5,7 @@
 
 class Rook: public Piece {
 public:
-    explicit Rook(QWidget * parent = nullptr, const std::string _color = "");
+    Rook(QWidget * parent = nullptr, const std::string _color = "");
     std::string GetName() const;
     bool GetStatus() const;
     unsigned GetID() const;

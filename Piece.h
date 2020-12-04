@@ -12,7 +12,6 @@ class Piece: public QLabel {
 
 protected:
     Piece * ui;
-
     unsigned ID;
     std::string Color;
     bool Status;
@@ -20,8 +19,8 @@ protected:
     int Row, Col;
 
 public:
-    /* Constructor explicito */
-    explicit Piece(QWidget * parent = nullptr, const std::string _color = "");
+    Piece() = delete;
+    Piece(QWidget * parent = nullptr, const std::string _color = "");
     virtual std::string GetName() const = 0;
     virtual bool GetStatus() const = 0;
     virtual unsigned GetID() const = 0;
