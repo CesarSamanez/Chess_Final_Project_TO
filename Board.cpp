@@ -7,13 +7,14 @@ Board::Board(QWidget * parent): QWidget(parent), ui(new Ui::Board) {
     /* Siempre declarar para que funcione */
     setAcceptDrops(true);
 
+    // Imagen del tablero
+    BoardIcon.load("../Chess_Final_Project_TO/Images/chess_board.png");
+
     /* Inicializar tablero de ajedrez */
     InitializeBoard();
 }
 
 void Board::InitializeBoard() {
-    // Imagen del tablero
-    BoardIcon.load("../Chess_Final_Project_TO/Images/chess_board.png");
     for (int row = 0; row < 8; row++) {
         for (int col = 0; col < 8; col++) {
             MyBoardMapping[row][col] = nullptr;
@@ -245,7 +246,7 @@ void Board::MappingOfPieces() {
 
 }
 
-bool Board::ValidateMovement(int rowInitial, int colInitial, int rowFinal, int colFinal) {
+bool Board::ValidateMovement(const int& rowInitial, const int& colInitial, const int& rowFinal, const int& colFinal) {
 
     auto piecePosition = MyBoardMapping[rowInitial][colInitial];
     std::vector < std::pair < int, int >> misMovimientos;
@@ -255,7 +256,6 @@ bool Board::ValidateMovement(int rowInitial, int colInitial, int rowFinal, int c
     piecePosition -> PossibleMoves(MyBoardMapping);
     if (piecePosition -> GetName().compare("Rook") == 0) {
         return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
-
     } else if (piecePosition -> GetName().compare("Knight") == 0) {
         return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
     } else if (piecePosition -> GetName().compare("Bishop") == 0) {
@@ -271,8 +271,7 @@ bool Board::ValidateMovement(int rowInitial, int colInitial, int rowFinal, int c
     return false;
 }
 
-void Board::Check(Piece *piece){
-
+void Board::Check(const Piece *piece){
     if(piece->GetName().compare("King")!=0){
         std::vector < std::pair < int, int >> futMovements; //futuros movimientos
         futMovements = piece->PossibleMoves(MyBoardMapping);
@@ -290,7 +289,7 @@ void Board::Check(Piece *piece){
     }
 }
 
-void Board::ChekMate(Piece *piece){
+void Board::ChekMate(const Piece *piece){
     if(piece->GetName().compare("King")==0){
         QMessageBox message;
         message.setText("Jaque Mate");
@@ -316,7 +315,7 @@ void Board::DeadPosition(){
         std::cout << "Tablas"<< std::endl;
     }
 }
-void Board::DrawMovements(std::vector < std::pair < int, int > > _movements) {
+void Board::DrawMovements(const std::vector < std::pair < int, int > >& _movements) {
     //Limpiar movimientos ficha anterior
     RemoveDrawnMovements();
 
@@ -394,7 +393,7 @@ void Board::dropEvent(QDropEvent * event) {
          * Mejorar con casos de captuas
          */
         if (ValidateMovement(ReferentialPositionX, ReferentialPositionY, positionY, positionX)) {
-              if (MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> Capture(MyBoardMapping, positionY, positionX)) {
+            if (MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> Capture(MyBoardMapping, positionY, positionX)) {
                 /* Captura de pieza */
                 MyBoardMapping[positionY][positionX] -> setVisible(false);
                 std::cout << "Se capturo la pieza [" << positionY << "," << positionX << "]\n";

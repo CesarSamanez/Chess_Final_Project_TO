@@ -41,10 +41,10 @@ public:
     void CreationOfPieces();
     void MappingOfPieces();
 
-    bool ValidateMovement(int rowInitial, int colInitial, int rowFinal, int colFinal);
-    void DrawMovements(std::vector<std::pair<int, int>> movements);
-    void Check(Piece *piece);
-    void ChekMate(Piece *piece);
+    bool ValidateMovement(const int& rowInitial, const int& colInitial, const int& rowFinal, const int& colFinal);
+    void DrawMovements(const std::vector<std::pair<int, int>>& movements);
+    void Check(const Piece *piece);
+    void ChekMate(const Piece *piece);
     void DeadPosition();
     void RemoveDrawnMovements();
 private:

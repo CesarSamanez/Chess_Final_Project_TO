@@ -1,6 +1,6 @@
 #include "Pawn.h"
 
-Pawn::Pawn(QWidget * parent, std::string _color): Piece(parent, _color) {
+Pawn::Pawn(QWidget * parent, const std::string _color): Piece(parent, _color) {
     if (Color.compare("White") == 0) {
         PieceIcon.load("../Chess_Final_Project_TO/Images/white_pawn.png");
     } else if (Color.compare("Black") == 0) {
@@ -28,7 +28,7 @@ std::string Pawn::GetColor() const {
     return Color;
 }
 
-void Pawn::SetPosition(int _row, int _col) {
+void Pawn::SetPosition(const int& _row, const int& _col) {
     Row = _row;
     Col = _col;
 }
@@ -41,7 +41,7 @@ int Pawn::GetCol() const {
     return Col;
 }
 
-bool Pawn::MovePiece(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
+bool Pawn::MovePiece(Piece * MyBoardMapping[8][8], const int& rowFinal, const int& colFinal) const{
 
     /*
      * Falta considerar promoción de piezas
@@ -79,7 +79,7 @@ bool Pawn::MovePiece(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
 
 }
 
-std::vector<std::pair<int, int> > Pawn::PossibleMoves(Piece *MyBoardMapping[8][8]){
+std::vector<std::pair<int, int> > Pawn::PossibleMoves(Piece *MyBoardMapping[8][8]) const{
     std::vector<std::pair<int, int>> movements;
 
     for(int i=0; i< 8; i++)
@@ -90,7 +90,7 @@ std::vector<std::pair<int, int> > Pawn::PossibleMoves(Piece *MyBoardMapping[8][8
     return movements;
 }
 
-bool Pawn::Capture(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
+bool Pawn::Capture(Piece * MyBoardMapping[8][8], const int& rowFinal, const int& colFinal) const{
     return (MyBoardMapping[rowFinal][colFinal] != nullptr && (MyBoardMapping[rowFinal][colFinal] -> GetColor().compare(GetColor()) != 0));
 }
 

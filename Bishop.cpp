@@ -1,6 +1,6 @@
 #include "Bishop.h"
 
-Bishop::Bishop(QWidget * parent, std::string _color): Piece(parent, _color) {
+Bishop::Bishop(QWidget * parent, const std::string _color): Piece(parent, _color) {
     if (Color.compare("White") == 0) {
         PieceIcon.load("../Chess_Final_Project_TO/Images/white_bishop.png");
     } else if (Color.compare("Black") == 0) {
@@ -24,7 +24,7 @@ unsigned Bishop::GetID() const {
     return ID;
 }
 
-void Bishop::SetPosition(int _row, int _col) {
+void Bishop::SetPosition(const int& _row, const int& _col) {
     Row = _row;
     Col = _col;
 }
@@ -41,7 +41,7 @@ std::string Bishop::GetColor() const {
     return Color;
 }
 
-bool Bishop::MovePiece(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
+bool Bishop::MovePiece(Piece * MyBoardMapping[8][8], const int& rowFinal, const int& colFinal) const {
     Piece * tmp = MyBoardMapping[rowFinal][colFinal];
 
     int rowDifference = abs(GetRow() - rowFinal);
@@ -62,11 +62,11 @@ bool Bishop::MovePiece(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal)
         return false;
 }
 
-bool Bishop::Capture(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
+bool Bishop::Capture(Piece * MyBoardMapping[8][8], const int& rowFinal, const int& colFinal) const{
     return (MyBoardMapping[rowFinal][colFinal] != nullptr && (MyBoardMapping[rowFinal][colFinal] -> GetColor().compare(GetColor()) != 0));
 }
 
-std::vector<std::pair<int, int> > Bishop::PossibleMoves(Piece *MyBoardMapping[8][8]){
+std::vector<std::pair<int, int> > Bishop::PossibleMoves(Piece *MyBoardMapping[8][8]) const{
     std::vector<std::pair<int, int>> movements;
 
     for(int i=0; i< 8; i++)

@@ -1,6 +1,6 @@
 #include "Knight.h"
 
-Knight::Knight(QWidget * parent, std::string _color): Piece(parent, _color) {
+Knight::Knight(QWidget * parent, const std::string _color): Piece(parent, _color) {
     if (Color.compare("White") == 0) {
         PieceIcon.load("../Chess_Final_Project_TO/Images/white_knight.png");
     } else if (Color.compare("Black") == 0) {
@@ -28,7 +28,7 @@ std::string Knight::GetColor() const {
     return Color;
 }
 
-void Knight::SetPosition(int _row, int _col) {
+void Knight::SetPosition(const int& _row, const int& _col) {
     Row = _row;
     Col = _col;
 }
@@ -41,7 +41,7 @@ int Knight::GetCol() const {
     return Col;
 }
 
-bool Knight::MovePiece(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
+bool Knight::MovePiece(Piece * MyBoardMapping[8][8], const int& rowFinal, const int& colFinal) const{
     Piece * tmp = MyBoardMapping[rowFinal][colFinal];
     int rowDifference = GetRow() - rowFinal;
     int colDifference = GetCol() - colFinal;
@@ -56,7 +56,7 @@ bool Knight::MovePiece(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal)
     }
 }
 
-std::vector<std::pair<int, int> > Knight::PossibleMoves(Piece *MyBoardMapping[8][8]){
+std::vector<std::pair<int, int> > Knight::PossibleMoves(Piece *MyBoardMapping[8][8]) const{
     std::vector<std::pair<int, int>> movements;
 
     for(int i=0; i< 8; i++)
@@ -67,7 +67,7 @@ std::vector<std::pair<int, int> > Knight::PossibleMoves(Piece *MyBoardMapping[8]
     return movements;
 }
 
-bool Knight::Capture(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
+bool Knight::Capture(Piece * MyBoardMapping[8][8], const int& rowFinal, const int& colFinal) const{
     return (MyBoardMapping[rowFinal][colFinal] != nullptr && (MyBoardMapping[rowFinal][colFinal] -> GetColor().compare(GetColor()) != 0));
 }
 

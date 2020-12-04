@@ -1,6 +1,6 @@
 #include "Rook.h"
 
-Rook::Rook(QWidget * parent, std::string _color): Piece(parent, _color) {
+Rook::Rook(QWidget * parent, const std::string _color): Piece(parent, _color) {
     if (Color.compare("White") == 0) {
         PieceIcon.load("../Chess_Final_Project_TO/Images/white_rook.png");
     } else if (Color.compare("Black") == 0) {
@@ -28,7 +28,7 @@ std::string Rook::GetColor() const {
     return Color;
 }
 
-void Rook::SetPosition(int _row, int _col) {
+void Rook::SetPosition(const int& _row, const int& _col) {
     Row = _row;
     Col = _col;
 }
@@ -41,7 +41,7 @@ int Rook::GetCol() const {
     return Col;
 }
 
-bool Rook::MovePiece(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
+bool Rook::MovePiece(Piece * MyBoardMapping[8][8], const int& rowFinal, const int& colFinal) const{
     Piece * tmp = MyBoardMapping[rowFinal][colFinal];
 
     int rowDifference = rowFinal - GetRow(); //diferencia de filas
@@ -68,7 +68,7 @@ bool Rook::MovePiece(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
         return false;
 }
 
-std::vector<std::pair<int, int> > Rook::PossibleMoves(Piece *MyBoardMapping[8][8]){
+std::vector<std::pair<int, int> > Rook::PossibleMoves(Piece *MyBoardMapping[8][8]) const{
     std::vector<std::pair<int, int>> movements;
 
     for(int i=0; i< 8; i++)
@@ -79,7 +79,7 @@ std::vector<std::pair<int, int> > Rook::PossibleMoves(Piece *MyBoardMapping[8][8
     return movements;
 }
 
-bool Rook::Capture(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
+bool Rook::Capture(Piece * MyBoardMapping[8][8], const int& rowFinal, const int& colFinal) const{
     return (MyBoardMapping[rowFinal][colFinal] != nullptr && (MyBoardMapping[rowFinal][colFinal] -> GetColor().compare(GetColor()) != 0));
 }
 

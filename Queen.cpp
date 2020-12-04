@@ -1,6 +1,6 @@
 #include "Queen.h"
 
-Queen::Queen(QWidget * parent, std::string _color): Piece(parent, _color) {
+Queen::Queen(QWidget * parent, const std::string _color): Piece(parent, _color) {
     if (Color.compare("White") == 0) {
         PieceIcon.load("../Chess_Final_Project_TO/Images/white_queen.png");
     } else if (Color.compare("Black") == 0) {
@@ -28,7 +28,7 @@ std::string Queen::GetColor() const {
     return Color;
 }
 
-void Queen::SetPosition(int _row, int _col) {
+void Queen::SetPosition(const int& _row, const int& _col) {
     Row = _row;
     Col = _col;
 }
@@ -41,16 +41,17 @@ int Queen::GetCol() const {
     return Col;
 }
 
-bool Queen::MovePiece(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
+bool Queen::MovePiece(Piece * MyBoardMapping[8][8], const int& rowFinal, const int& colFinal) const{
     /*
      * Queen se mueve como un Alfil
      * Queen se mueve como una Torre
      */
 
-    Rook * tmpRook = new Rook(this, GetColor());
+    Piece * tmpRook = nullptr;
     tmpRook -> SetPosition(GetRow(), GetCol());
 
-    Bishop * tmpBishop = new Bishop(this, GetColor());
+
+    Piece * tmpBishop = nullptr;
     tmpBishop -> SetPosition(GetRow(), GetCol());
 
     if (tmpRook -> MovePiece(MyBoardMapping, rowFinal, colFinal) ||
@@ -60,7 +61,7 @@ bool Queen::MovePiece(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) 
     return false;
 }
 
-std::vector<std::pair<int, int> > Queen::PossibleMoves(Piece *MyBoardMapping[8][8]){
+std::vector<std::pair<int, int> > Queen::PossibleMoves(Piece *MyBoardMapping[8][8]) const{
     std::vector<std::pair<int, int>> movements;
 
     for(int i=0; i< 8; i++)
@@ -71,7 +72,7 @@ std::vector<std::pair<int, int> > Queen::PossibleMoves(Piece *MyBoardMapping[8][
     return movements;
 }
 
-bool Queen::Capture(Piece * MyBoardMapping[8][8], int rowFinal, int colFinal) {
+bool Queen::Capture(Piece * MyBoardMapping[8][8], const int& rowFinal, const int& colFinal) const{
     return (MyBoardMapping[rowFinal][colFinal] != nullptr && (MyBoardMapping[rowFinal][colFinal] -> GetColor().compare(GetColor()) != 0));
 }
 
