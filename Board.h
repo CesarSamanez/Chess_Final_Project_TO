@@ -53,8 +53,7 @@ private:
     QPixmap BoardIcon;
     Ui::Board * ui;
 
-    //Variables auxiliares
-    int ReferentialPositionX, ReferentialPositionY, positionX, positionY;
+    std::string TurnColor = "White";
 
     /* Mapear tablero */
     Piece *MyBoardMapping[8][8];
@@ -96,6 +95,10 @@ private:
     // Vector de posibles movimientos
     std::vector<QLabel*> posibbleMovementsInBoard;
 
+    //Variables auxiliares
+    int ReferentialPositionX, ReferentialPositionY, positionX, positionY;
+
+    void ChangeTurnColor();
     void mousePressEvent(QMouseEvent * event) override;
     void dragEnterEvent(QDragEnterEvent * event) override;
     void dragMoveEvent(QDragMoveEvent * event) override;

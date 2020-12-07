@@ -32,7 +32,7 @@ void Board::PositionPiecesInBoard() {
 
     for (size_t row = 0; row < 8; row++) {
         for (size_t col = 0; col < 8; col++) {
-            if (row < 2 || row > 5){
+            if (row < 2 || row > 5) {
                 MyBoardMapping[row][col] -> move(col * 80, row * 80);
                 MyBoardMapping[row][col] -> show();
                 MyBoardMapping[row][col] -> SetPosition(row, col);
@@ -238,17 +238,21 @@ void Board::dropEvent(QDropEvent * event) {
                 ChekMate(MyBoardMapping[positionY][positionX]); //validar JaqueMate
                 MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> move(positionX * 80, positionY * 80);
                 MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
+                MyBoardMapping[positionY][positionX] -> SetColor(MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> GetColor());
                 MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
                 Check(MyBoardMapping[positionY][positionX]); //chequea jaque
                 MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
+                // ChangeTurnColor();
             } else if (MyBoardMapping[positionY][positionX] == nullptr) {
                 //Mover pieza nueva posicion
                 MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> move(positionX * 80, positionY * 80);
                 MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
+                MyBoardMapping[positionY][positionX] -> SetColor(MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> GetColor());
                 MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
                 MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
                 //chequear jaque de la nueva posicion
                 Check(MyBoardMapping[positionY][positionX]);
+
             } else {
                 return;
             }
@@ -256,9 +260,11 @@ void Board::dropEvent(QDropEvent * event) {
                 event -> setDropAction(Qt::MoveAction);
                 event -> accept();
                 RemoveDrawnMovements();
+                // ChangeTurnColor();
             } else {
                 event -> acceptProposedAction();
             }
+            ChangeTurnColor();
         } else {
             event -> ignore();
         }
@@ -276,12 +282,12 @@ void Board::mousePressEvent(QMouseEvent * event) {
     ReferentialPositionX = event -> pos().y() / 80;
     ReferentialPositionY = event -> pos().x() / 80;
 
-    if (child == nullptr || isAdvertenceWidget()) {
+    if (child == nullptr || isAdvertenceWidget() || MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> GetColor().compare(TurnColor) != 0) {
+        std::cerr << "TURNO DEL JUGADOR " << TurnColor << std::endl;
         return;
     }
 
     std::cout << "Posicion donde presiono primero [" << ReferentialPositionX << "," << ReferentialPositionY << "]\n";
-    // EliminaMovimientosGraficados();
 
     QByteArray itemData;
     QDataStream dataStream( & itemData, QIODevice::WriteOnly);
@@ -294,6 +300,13 @@ void Board::mousePressEvent(QMouseEvent * event) {
     drag -> setMimeData(mimeData);
 
     drag -> exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
+}
+
+void Board::ChangeTurnColor() {
+    if (TurnColor.compare("White") == 0)
+        TurnColor = "Black";
+    else
+        TurnColor = "White";
 }
 
 Board::~Board() {
