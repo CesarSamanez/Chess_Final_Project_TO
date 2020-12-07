@@ -80,10 +80,7 @@ void Board::MappingOfPieces() {
 
 }
 
-bool Board::ValidateMovement(const int & rowInitial,
-    const int & colInitial,
-        const int & rowFinal,
-            const int & colFinal) {
+bool Board::ValidateMovement(const int & rowInitial, const int & colInitial, const int & rowFinal, const int & colFinal) {
 
     auto piecePosition = MyBoardMapping[rowInitial][colInitial];
     std::vector < std::pair < int, int >> misMovimientos;
@@ -153,6 +150,7 @@ void Board::DeadPosition() {
         std::cout << "Tablas" << std::endl;
     }
 }
+
 void Board::DrawMovements(const std::vector < std::pair < int, int > > & _movements) {
     //Limpiar movimientos ficha anterior
     RemoveDrawnMovements();
@@ -232,26 +230,60 @@ void Board::dropEvent(QDropEvent * event) {
          */
         if (ValidateMovement(ReferentialPositionX, ReferentialPositionY, positionY, positionX)) {
             if (MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> Capture(MyBoardMapping, positionY, positionX)) {
-                /* Captura de pieza */
-                MyBoardMapping[positionY][positionX] -> setVisible(false);
-                std::cout << "Se capturo la pieza [" << positionY << "," << positionX << "]\n";
-                ChekMate(MyBoardMapping[positionY][positionX]); //validar JaqueMate
-                MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> move(positionX * 80, positionY * 80);
-                MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
-                MyBoardMapping[positionY][positionX] -> SetColor(MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> GetColor());
-                MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
-                Check(MyBoardMapping[positionY][positionX]); //chequea jaque
-                MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
-                // ChangeTurnColor();
+                // Validacion para promocion de peon
+                if(MyBoardMapping[ReferentialPositionX][ReferentialPositionY]->GetName().compare("Pawn") == 0 && (positionY == 0 || positionY == 7)){
+                    MyBoardMapping[positionY][positionX] -> setVisible(false);
+                    std::cout << "Se capturo la pieza [" << positionY << "," << positionX << "]\n";
+                    ChekMate(MyBoardMapping[positionY][positionX]); //validar JaqueMate
+                    MyBoardMapping[ReferentialPositionX][ReferentialPositionY]->setVisible(false);
+                    // Promocion de peon
+                    Piece * tmp = PromotionOfPawn(TurnColor);
+                    tmp->move(positionX*80, positionY*80);
+                    tmp->setVisible(true);
+
+                    MyBoardMapping[positionY][positionX] = tmp;
+                    MyBoardMapping[positionY][positionX] -> SetColor(MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> GetColor());
+                    MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
+                    Check(MyBoardMapping[positionY][positionX]); //chequea jaque
+                    MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
+
+                }else{
+                    /* Captura de pieza */
+                    MyBoardMapping[positionY][positionX] -> setVisible(false);
+                    std::cout << "Se capturo la pieza [" << positionY << "," << positionX << "]\n";
+                    ChekMate(MyBoardMapping[positionY][positionX]); //validar JaqueMate
+                    MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> move(positionX * 80, positionY * 80);
+                    MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
+                    MyBoardMapping[positionY][positionX] -> SetColor(MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> GetColor());
+                    MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
+                    Check(MyBoardMapping[positionY][positionX]); //chequea jaque
+                    MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
+
+                }
             } else if (MyBoardMapping[positionY][positionX] == nullptr) {
-                //Mover pieza nueva posicion
-                MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> move(positionX * 80, positionY * 80);
-                MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
-                MyBoardMapping[positionY][positionX] -> SetColor(MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> GetColor());
-                MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
-                MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
-                //chequear jaque de la nueva posicion
-                Check(MyBoardMapping[positionY][positionX]);
+                if(MyBoardMapping[ReferentialPositionX][ReferentialPositionY]->GetName().compare("Pawn") == 0 && (positionY == 0 || positionY == 7)){
+                    MyBoardMapping[ReferentialPositionX][ReferentialPositionY]->setVisible(false);
+                    // Promocion de peon
+                    Piece * tmp = PromotionOfPawn(TurnColor);
+                    tmp->move(positionX*80, positionY*80);
+                    tmp->setVisible(true);
+
+                    MyBoardMapping[positionY][positionX] = tmp;
+                    MyBoardMapping[positionY][positionX] -> SetColor(MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> GetColor());
+                    MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
+                    Check(MyBoardMapping[positionY][positionX]); //chequea jaque
+                    MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
+
+                }else{
+                    //Mover pieza nueva posicion
+                    MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> move(positionX * 80, positionY * 80);
+                    MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
+                    MyBoardMapping[positionY][positionX] -> SetColor(MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> GetColor());
+                    MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
+                    MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
+                    //chequear jaque de la nueva posicion
+                    Check(MyBoardMapping[positionY][positionX]);
+                }
 
             } else {
                 return;
@@ -264,6 +296,7 @@ void Board::dropEvent(QDropEvent * event) {
             } else {
                 event -> acceptProposedAction();
             }
+            // Cambio de turno de jugador
             ChangeTurnColor();
         } else {
             event -> ignore();
@@ -274,6 +307,32 @@ void Board::dropEvent(QDropEvent * event) {
         return;
     }
 
+}
+
+Piece* Board::PromotionOfPawn(const std::string& _color){
+    Piece* PawnPromotionPiece;
+
+    QStringList piecesPromotion;
+    piecesPromotion<<"Bishop";
+    piecesPromotion<<"Knight";
+    piecesPromotion<<"Queen";
+    piecesPromotion<<"Rook";
+
+    std::string itemPromotion = QInputDialog::getItem(this, "Promotion", "Choose one", piecesPromotion).toStdString();
+
+    if(itemPromotion.compare("Bishop") == 0){
+        PawnPromotionPiece = new Bishop(this, _color);
+    }else if(itemPromotion.compare("Knight") == 0){
+        PawnPromotionPiece = new Knight(this, _color);
+    }else if(itemPromotion.compare("Queen") == 0){
+        PawnPromotionPiece = new Queen(this, _color);
+    }else if(itemPromotion.compare("Rook") == 0){
+        PawnPromotionPiece = new Rook(this, _color);
+    }else{
+        PawnPromotionPiece = nullptr;
+    }
+
+    return PawnPromotionPiece;
 }
 
 void Board::mousePressEvent(QMouseEvent * event) {

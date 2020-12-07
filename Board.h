@@ -6,6 +6,7 @@
 #include <QPixmap>
 #include <QPainter>
 #include <QtWidgets>
+#include <QInputDialog>
 
 /* STL */
 #include <iostream>
@@ -98,6 +99,7 @@ private:
     //Variables auxiliares
     int ReferentialPositionX, ReferentialPositionY, positionX, positionY;
 
+    Piece* PromotionOfPawn(const std::string& _color);
     void ChangeTurnColor();
     void mousePressEvent(QMouseEvent * event) override;
     void dragEnterEvent(QDragEnterEvent * event) override;
