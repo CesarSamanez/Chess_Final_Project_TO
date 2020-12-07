@@ -22,6 +22,10 @@ unsigned Knight::GetID() const {
     return ID;
 }
 
+void Knight::SetColor(const std::string _color){
+    Color = _color;
+}
+
 std::string Knight::GetColor() const {
     return Color;
 }

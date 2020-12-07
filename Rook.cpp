@@ -22,6 +22,10 @@ unsigned Rook::GetID() const {
     return ID;
 }
 
+void Rook::SetColor(const std::string _color){
+    Color = _color;
+}
+
 std::string Rook::GetColor() const {
     return Color;
 }

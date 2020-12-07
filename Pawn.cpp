@@ -22,6 +22,10 @@ unsigned Pawn::GetID() const {
     return ID;
 }
 
+void Pawn::SetColor(const std::string _color){
+    Color = _color;
+}
+
 std::string Pawn::GetColor() const {
     return Color;
 }

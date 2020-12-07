@@ -24,6 +24,7 @@ public:
     virtual std::string GetName() const = 0;
     virtual bool GetStatus() const = 0;
     virtual unsigned GetID() const = 0;
+    virtual void SetColor(const std::string _color) = 0;
     virtual std::string GetColor() const = 0;
     virtual bool MovePiece( Piece *MyBoardMapping[8][8], const int& rowFinal, const int& colFinal) const = 0;
     virtual bool Capture( Piece *MyBoardMapping[8][8], const int& rowFinal, const int& colFinal) const = 0;

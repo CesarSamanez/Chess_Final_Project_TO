@@ -22,6 +22,10 @@ unsigned King::GetID() const {
     return ID;
 }
 
+void King::SetColor(const std::string _color){
+    Color = _color;
+}
+
 std::string King::GetColor() const {
     return Color;
 }

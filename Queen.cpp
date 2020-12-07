@@ -22,6 +22,10 @@ unsigned Queen::GetID() const {
     return ID;
 }
 
+void Queen::SetColor(const std::string _color){
+    Color = _color;
+}
+
 std::string Queen::GetColor() const {
     return Color;
 }

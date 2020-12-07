@@ -9,6 +9,7 @@ public:
     std::string GetName() const;
     bool GetStatus() const;
     unsigned GetID() const;
+    void SetColor( const std::string _color);
     std::string GetColor() const;
     void SetPosition(const int& _row, const int& _col);
     int GetRow() const;

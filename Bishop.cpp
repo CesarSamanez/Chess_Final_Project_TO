@@ -35,6 +35,10 @@ int Bishop::GetCol() const {
     return Col;
 }
 
+void Bishop::SetColor(const std::string _color){
+    Color = _color;
+}
+
 std::string Bishop::GetColor() const {
     return Color;
 }
