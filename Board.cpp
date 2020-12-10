@@ -24,7 +24,6 @@ void Board::InitializeBoard() {
 }
 
 void Board::PositionPiecesInBoard() {
-
     /*
      * Creacion de piezas y colocarlos en el tablero
      * mediante posiciones
@@ -33,9 +32,9 @@ void Board::PositionPiecesInBoard() {
     for (size_t row = 0; row < 8; row++) {
         for (size_t col = 0; col < 8; col++) {
             if (row < 2 || row > 5) {
-                MyBoardMapping[row][col] -> move(col * 80, row * 80);
-                MyBoardMapping[row][col] -> show();
-                MyBoardMapping[row][col] -> SetPosition(row, col);
+                MyBoard[row][col] -> move(col * 80, row * 80);
+                MyBoard[row][col] -> show();
+                MyBoard[row][col] -> SetPosition(row, col);
             }
         }
     }
@@ -43,64 +42,67 @@ void Board::PositionPiecesInBoard() {
 
 void Board::MappingOfPieces() {
     /* Piezas negras */
-    MyBoardMapping[0][0] = black_rook1;
-    MyBoardMapping[0][1] = black_knight1;
-    MyBoardMapping[0][2] = black_bishop1;
-    MyBoardMapping[0][3] = black_queen;
-    MyBoardMapping[0][4] = black_king;
-    MyBoardMapping[0][5] = black_bishop2;
-    MyBoardMapping[0][6] = black_knight2;
-    MyBoardMapping[0][7] = black_rook2;
-    MyBoardMapping[1][0] = black_pawn1;
-    MyBoardMapping[1][1] = black_pawn2;
-    MyBoardMapping[1][2] = black_pawn3;
-    MyBoardMapping[1][3] = black_pawn4;
-    MyBoardMapping[1][4] = black_pawn5;
-    MyBoardMapping[1][5] = black_pawn6;
-    MyBoardMapping[1][6] = black_pawn7;
-    MyBoardMapping[1][7] = black_pawn8;
+    MyBoard[0][0] = black_rook1;
+    MyBoard[0][1] = black_knight1;
+    MyBoard[0][2] = black_bishop1;
+    MyBoard[0][3] = black_king;
+    MyBoard[0][4] = black_queen;
+    MyBoard[0][5] = black_bishop2;
+    MyBoard[0][6] = black_knight2;
+    MyBoard[0][7] = black_rook2;
+    MyBoard[1][0] = black_pawn1;
+    MyBoard[1][1] = black_pawn2;
+    MyBoard[1][2] = black_pawn3;
+    MyBoard[1][3] = black_pawn4;
+    MyBoard[1][4] = black_pawn5;
+    MyBoard[1][5] = black_pawn6;
+    MyBoard[1][6] = black_pawn7;
+    MyBoard[1][7] = black_pawn8;
 
     /* Piezas blancas */
-    MyBoardMapping[7][0] = white_rook1;
-    MyBoardMapping[7][1] = white_knight1;
-    MyBoardMapping[7][2] = white_bishop1;
-    MyBoardMapping[7][3] = white_king;
-    MyBoardMapping[7][4] = white_queen;
-    MyBoardMapping[7][5] = white_bishop2;
-    MyBoardMapping[7][6] = white_knight2;
-    MyBoardMapping[7][7] = white_rook2;
-    MyBoardMapping[6][0] = white_pawn1;
-    MyBoardMapping[6][1] = white_pawn2;
-    MyBoardMapping[6][2] = white_pawn3;
-    MyBoardMapping[6][3] = white_pawn4;
-    MyBoardMapping[6][4] = white_pawn5;
-    MyBoardMapping[6][5] = white_pawn6;
-    MyBoardMapping[6][6] = white_pawn7;
-    MyBoardMapping[6][7] = white_pawn8;
+    MyBoard[7][0] = white_rook1;
+    MyBoard[7][1] = white_knight1;
+    MyBoard[7][2] = white_bishop1;
+    MyBoard[7][3] = white_queen;
+    MyBoard[7][4] = white_king;
+    MyBoard[7][5] = white_bishop2;
+    MyBoard[7][6] = white_knight2;
+    MyBoard[7][7] = white_rook2;
+    MyBoard[6][0] = white_pawn1;
+    MyBoard[6][1] = white_pawn2;
+    MyBoard[6][2] = white_pawn3;
+    MyBoard[6][3] = white_pawn4;
+    MyBoard[6][4] = white_pawn5;
+    MyBoard[6][5] = white_pawn6;
+    MyBoard[6][6] = white_pawn7;
+    MyBoard[6][7] = white_pawn8;
 
 }
 
-bool Board::ValidateMovement(const int & rowInitial, const int & colInitial, const int & rowFinal, const int & colFinal) {
+bool Board::ValidateMovement(const int & rowInitial,
+                             const int & colInitial,
+                             const int & rowFinal,
+                             const int & colFinal) {
 
-    auto piecePosition = MyBoardMapping[rowInitial][colInitial];
+    auto piecePosition = MyBoard[rowInitial][colInitial];
     std::vector < std::pair < int, int >> misMovimientos;
 
-    misMovimientos = piecePosition -> PossibleMoves(MyBoardMapping);
+    misMovimientos = piecePosition -> PossibleMoves(MyBoard);
     DrawMovements(misMovimientos);
-    piecePosition -> PossibleMoves(MyBoardMapping);
+    piecePosition -> PossibleMoves(MyBoard);
 
     if (piecePosition -> GetName().compare("Rook") == 0) {
-        return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
+        return piecePosition -> MovePiece(MyBoard, rowFinal, colFinal);
     } else if (piecePosition -> GetName().compare("Knight") == 0) {
-        return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
+        return piecePosition -> MovePiece(MyBoard, rowFinal, colFinal);
     } else if (piecePosition -> GetName().compare("Bishop") == 0) {
-        return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
+        return piecePosition -> MovePiece(MyBoard, rowFinal, colFinal);
     } else if (piecePosition -> GetName().compare("Queen") == 0) {
-        return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
+        return piecePosition -> MovePiece(MyBoard, rowFinal, colFinal);
     } else if (piecePosition -> GetName().compare("King") == 0) {
-        return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
+        return piecePosition -> MovePiece(MyBoard, rowFinal, colFinal);
     } else if (piecePosition -> GetName().compare("Pawn") == 0) {
-        return piecePosition -> MovePiece(MyBoardMapping, rowFinal, colFinal);
+        return piecePosition -> MovePiece(MyBoard, rowFinal, colFinal);
     }
 
     return false;
@@ -109,7 +111,7 @@ bool Board::ValidateMovement(const int & rowInitial, const int & colInitial, con
 void Board::Check(const Piece * piece) {
     if (piece -> GetName().compare("King") != 0) {
         std::vector < std::pair < int, int >> futureMovements; //futuros movimientos
-        futureMovements = piece -> PossibleMoves(MyBoardMapping);
+        futureMovements = piece -> PossibleMoves(MyBoard);
         for (size_t i = 0; i < futureMovements.size(); i++) {
             if (piece -> GetColor().compare("White") == 0) {
                 if ((futureMovements[i].first == black_king -> GetRow()) && (futureMovements[i].second == black_king -> GetCol())) {
@@ -138,8 +140,8 @@ void Board::DeadPosition() {
     int count = 0;
     for (size_t row = 0; row < 8; row++) {
         for (size_t col = 0; col < 8; col++) {
-            if (MyBoardMapping[row][col] != nullptr) {
-                if (MyBoardMapping[row][col] -> GetName().compare("King") != 0) {
+            if (MyBoard[row][col] != nullptr) {
+                if (MyBoard[row][col] -> GetName().compare("King") != 0) {
                     count++;
                 }
             }
@@ -174,7 +176,7 @@ void Board::RemoveDrawnMovements() {
 
 bool Board::isAdvertenceWidget() {
     for (size_t index = 0; index < posibbleMovementsInBoard.size(); index++) {
-        if (posibbleMovementsInBoard[index] -> y() == ReferentialPositionX * 80 + 30 && posibbleMovementsInBoard[index] -> x() == ReferentialPositionY * 80 + 30) {
+        if (posibbleMovementsInBoard[index] -> y() == PositionInitialX * 80 + 30 && posibbleMovementsInBoard[index] -> x() == PositionInitialY * 80 + 30) {
             return true;
         }
     }
@@ -219,70 +221,74 @@ void Board::dropEvent(QDropEvent * event) {
         QDataStream dataStream( & itemData, QIODevice::ReadOnly);
 
         /* Recalcular posicion para centrar la pieza */
-        positionX = (event -> pos().x() / 80);
-        positionY = (event -> pos().y() / 80);
+        PositionFinalX = (event -> pos().y() / 80);
+        PositionFinalY = (event -> pos().x() / 80);
 
-        std::cout << "Posicion hacia donde me dirijo [" << positionY << "," << positionX << "]\n";
+        std::cout << "Posicion hacia donde me dirijo [" << PositionFinalX << "," << PositionFinalY << "]\n";
 
-        /* Condicion para no sobreponer piezas */
-        /*
-         * Mejorar con casos de captuas
-         */
-        if (ValidateMovement(ReferentialPositionX, ReferentialPositionY, positionY, positionX)) {
-            if (MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> Capture(MyBoardMapping, positionY, positionX)) {
+        //Enroque
+        if (isCastlingKing()) {
+            CastlingKing();
+            return;
+        }
+
+        //Movimientos normales y capturas
+        if (ValidateMovement(PositionInitialX, PositionInitialY, PositionFinalX, PositionFinalY)) {
+            if (MyBoard[PositionInitialX][PositionInitialY] -> Capture(MyBoard, PositionFinalX, PositionFinalY)) {
                 // Validacion para promocion de peon
-                if(MyBoardMapping[ReferentialPositionX][ReferentialPositionY]->GetName().compare("Pawn") == 0 && (positionY == 0 || positionY == 7)){
-                    MyBoardMapping[positionY][positionX] -> setVisible(false);
-                    std::cout << "Se capturo la pieza [" << positionY << "," << positionX << "]\n";
-                    ChekMate(MyBoardMapping[positionY][positionX]); //validar JaqueMate
-                    MyBoardMapping[ReferentialPositionX][ReferentialPositionY]->setVisible(false);
+                if (MyBoard[PositionInitialX][PositionInitialY] -> GetName().compare("Pawn") == 0 && (PositionFinalX == 0 || PositionFinalX == 7)) {
+                    MyBoard[PositionFinalX][PositionFinalY] -> setVisible(false);
+                    std::cout << "Se capturo la pieza [" << PositionFinalX << "," << PositionFinalY << "]\n";
+                    ChekMate(MyBoard[PositionFinalX][PositionFinalY]); //validar JaqueMate
+                    MyBoard[PositionInitialX][PositionInitialY] -> setVisible(false);
+
                     // Promocion de peon
                     Piece * tmp = PromotionOfPawn(TurnColor);
-                    tmp->move(positionX*80, positionY*80);
-                    tmp->setVisible(true);
+                    tmp -> move(PositionFinalY * 80, PositionFinalX * 80);
+                    tmp -> setVisible(true);
 
-                    MyBoardMapping[positionY][positionX] = tmp;
-                    MyBoardMapping[positionY][positionX] -> SetColor(MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> GetColor());
-                    MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
-                    Check(MyBoardMapping[positionY][positionX]); //chequea jaque
-                    MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
+                    MyBoard[PositionFinalX][PositionFinalY] = tmp;
+                    MyBoard[PositionFinalX][PositionFinalY] -> SetColor(MyBoard[PositionInitialX][PositionInitialY] -> GetColor());
+                    MyBoard[PositionFinalX][PositionFinalY] -> SetPosition(PositionFinalX, PositionFinalY);
+                    Check(MyBoard[PositionFinalX][PositionFinalY]); //chequea jaque
+                    MyBoard[PositionInitialX][PositionInitialY] = nullptr;
 
-                }else{
-                    /* Captura de pieza */
-                    MyBoardMapping[positionY][positionX] -> setVisible(false);
-                    std::cout << "Se capturo la pieza [" << positionY << "," << positionX << "]\n";
-                    ChekMate(MyBoardMapping[positionY][positionX]); //validar JaqueMate
-                    MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> move(positionX * 80, positionY * 80);
-                    MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
-                    MyBoardMapping[positionY][positionX] -> SetColor(MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> GetColor());
-                    MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
-                    Check(MyBoardMapping[positionY][positionX]); //chequea jaque
-                    MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
+                } else {
+                    // Captura de pieza
+                    MyBoard[PositionFinalX][PositionFinalY] -> setVisible(false);
+                    std::cout << "Se capturo la pieza [" << PositionFinalX << "," << PositionFinalY << "]\n";
+                    ChekMate(MyBoard[PositionFinalX][PositionFinalY]); //validar JaqueMate
+                    MyBoard[PositionInitialX][PositionInitialY] -> move(PositionFinalY * 80, PositionFinalX * 80);
+                    MyBoard[PositionFinalX][PositionFinalY] = MyBoard[PositionInitialX][PositionInitialY];
+                    MyBoard[PositionFinalX][PositionFinalY] -> SetColor(MyBoard[PositionInitialX][PositionInitialY] -> GetColor());
+                    MyBoard[PositionFinalX][PositionFinalY] -> SetPosition(PositionFinalX, PositionFinalY);
+                    Check(MyBoard[PositionFinalX][PositionFinalY]); //chequea jaque
+                    MyBoard[PositionInitialX][PositionInitialY] = nullptr;
 
                 }
-            } else if (MyBoardMapping[positionY][positionX] == nullptr) {
-                if(MyBoardMapping[ReferentialPositionX][ReferentialPositionY]->GetName().compare("Pawn") == 0 && (positionY == 0 || positionY == 7)){
-                    MyBoardMapping[ReferentialPositionX][ReferentialPositionY]->setVisible(false);
+            } else if (MyBoard[PositionFinalX][PositionFinalY] == nullptr) {
+                if (MyBoard[PositionInitialX][PositionInitialY] -> GetName().compare("Pawn") == 0 && (PositionFinalX == 0 || PositionFinalX == 7)) {
+                    MyBoard[PositionInitialX][PositionInitialY] -> setVisible(false);
                     // Promocion de peon
                     Piece * tmp = PromotionOfPawn(TurnColor);
-                    tmp->move(positionX*80, positionY*80);
-                    tmp->setVisible(true);
+                    tmp -> move(PositionFinalY * 80, PositionFinalX * 80);
+                    tmp -> setVisible(true);
 
-                    MyBoardMapping[positionY][positionX] = tmp;
-                    MyBoardMapping[positionY][positionX] -> SetColor(MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> GetColor());
-                    MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
-                    Check(MyBoardMapping[positionY][positionX]); //chequea jaque
-                    MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
+                    MyBoard[PositionFinalX][PositionFinalY] = tmp;
+                    MyBoard[PositionFinalX][PositionFinalY] -> SetColor(MyBoard[PositionInitialX][PositionInitialY] -> GetColor());
+                    MyBoard[PositionFinalX][PositionFinalY] -> SetPosition(PositionFinalX, PositionFinalY);
+                    Check(MyBoard[PositionFinalX][PositionFinalY]); //chequea jaque
+                    MyBoard[PositionInitialX][PositionInitialY] = nullptr;
 
-                }else{
+                } else {
                     //Mover pieza nueva posicion
-                    MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> move(positionX * 80, positionY * 80);
-                    MyBoardMapping[positionY][positionX] = MyBoardMapping[ReferentialPositionX][ReferentialPositionY];
-                    MyBoardMapping[positionY][positionX] -> SetColor(MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> GetColor());
-                    MyBoardMapping[positionY][positionX] -> SetPosition(positionY, positionX);
-                    MyBoardMapping[ReferentialPositionX][ReferentialPositionY] = nullptr;
+                    MyBoard[PositionInitialX][PositionInitialY] -> move(PositionFinalY * 80, PositionFinalX * 80);
+                    MyBoard[PositionFinalX][PositionFinalY] = MyBoard[PositionInitialX][PositionInitialY];
+                    MyBoard[PositionFinalX][PositionFinalY] -> SetColor(MyBoard[PositionInitialX][PositionInitialY] -> GetColor());
+                    MyBoard[PositionFinalX][PositionFinalY] -> SetPosition(PositionFinalX, PositionFinalY);
+                    MyBoard[PositionInitialX][PositionInitialY] = nullptr;
                     //chequear jaque de la nueva posicion
-                    Check(MyBoardMapping[positionY][positionX]);
+                    Check(MyBoard[PositionFinalX][PositionFinalY]);
                 }
 
             } else {
@@ -301,7 +307,6 @@ void Board::dropEvent(QDropEvent * event) {
         } else {
             event -> ignore();
         }
-
         DeadPosition();
     } else {
         return;
@@ -309,26 +314,26 @@ void Board::dropEvent(QDropEvent * event) {
 
 }
 
-Piece* Board::PromotionOfPawn(const std::string& _color){
-    Piece* PawnPromotionPiece;
+Piece * Board::PromotionOfPawn(const std::string & _color) {
+    Piece * PawnPromotionPiece;
 
     QStringList piecesPromotion;
-    piecesPromotion<<"Bishop";
-    piecesPromotion<<"Knight";
-    piecesPromotion<<"Queen";
-    piecesPromotion<<"Rook";
+    piecesPromotion << "Bishop";
+    piecesPromotion << "Knight";
+    piecesPromotion << "Queen";
+    piecesPromotion << "Rook";
 
     std::string itemPromotion = QInputDialog::getItem(this, "Promotion", "Choose one", piecesPromotion).toStdString();
 
-    if(itemPromotion.compare("Bishop") == 0){
+    if (itemPromotion.compare("Bishop") == 0) {
         PawnPromotionPiece = new Bishop(this, _color);
-    }else if(itemPromotion.compare("Knight") == 0){
+    } else if (itemPromotion.compare("Knight") == 0) {
         PawnPromotionPiece = new Knight(this, _color);
-    }else if(itemPromotion.compare("Queen") == 0){
+    } else if (itemPromotion.compare("Queen") == 0) {
         PawnPromotionPiece = new Queen(this, _color);
-    }else if(itemPromotion.compare("Rook") == 0){
+    } else if (itemPromotion.compare("Rook") == 0) {
         PawnPromotionPiece = new Rook(this, _color);
-    }else{
+    } else {
         PawnPromotionPiece = nullptr;
     }
 
@@ -338,15 +343,15 @@ Piece* Board::PromotionOfPawn(const std::string& _color){
 void Board::mousePressEvent(QMouseEvent * event) {
     auto child = childAt(event -> pos());
 
-    ReferentialPositionX = event -> pos().y() / 80;
-    ReferentialPositionY = event -> pos().x() / 80;
+    PositionInitialX = event -> pos().y() / 80;
+    PositionInitialY = event -> pos().x() / 80;
 
-    if (child == nullptr || isAdvertenceWidget() || MyBoardMapping[ReferentialPositionX][ReferentialPositionY] -> GetColor().compare(TurnColor) != 0) {
+    if (child == nullptr || isAdvertenceWidget() || MyBoard[PositionInitialX][PositionInitialY] -> GetColor().compare(TurnColor) != 0) {
         std::cerr << "TURNO DEL JUGADOR " << TurnColor << std::endl;
         return;
     }
 
-    std::cout << "Posicion donde presiono primero [" << ReferentialPositionX << "," << ReferentialPositionY << "]\n";
+    std::cout << "Posicion donde presiono primero [" << PositionInitialX << "," << PositionInitialY << "]\n";
 
     QByteArray itemData;
     QDataStream dataStream( & itemData, QIODevice::WriteOnly);
@@ -359,6 +364,95 @@ void Board::mousePressEvent(QMouseEvent * event) {
     drag -> setMimeData(mimeData);
 
     drag -> exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
+}
+
+bool Board::isCastlingKing() {
+    if (MyBoard[PositionInitialX][PositionInitialY] -> GetName().compare("King") == 0) {
+        if ((PositionFinalX == 7 || PositionFinalX == 0) && (PositionFinalY == 0 || PositionFinalY == 7)) {
+            if (MyBoard[PositionFinalX][PositionFinalY] -> GetName().compare("Rook") == 0 && MyBoard[PositionInitialX][PositionInitialY] -> GetColor().compare(TurnColor) == 0) {
+                if (PositionFinalY == 0) {
+                    return MyBoard[PositionFinalX][PositionFinalY] -> MovePiece(MyBoard, PositionInitialX, PositionInitialY - 1);
+                }
+                if (PositionFinalY == 7) {
+                    return MyBoard[PositionFinalX][PositionFinalY] -> MovePiece(MyBoard, PositionInitialX, PositionInitialY + 1);
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+void Board::CastlingKing() {
+
+    if (TurnColor.compare("White") == 0) {
+        if (PositionFinalY == 0) {
+            /* Enroque largo */
+            std::cout << "Mover Rey ->[" << PositionFinalX << "," << PositionFinalY + 2 << "]" << std::endl;
+            std::cout << "Mover Torre ->[" << PositionInitialX << "," << PositionInitialY - 1 << "]" << std::endl;
+
+            MyBoard[PositionFinalX][PositionFinalY + 2] = MyBoard[PositionInitialX][PositionInitialY];
+            MyBoard[PositionFinalX][PositionFinalY + 2] -> move((PositionFinalY + 2) * 80, PositionFinalX * 80);
+            MyBoard[PositionFinalX][PositionFinalY + 2] -> SetPosition(PositionFinalX, PositionFinalY + 2);
+            MyBoard[PositionInitialX][PositionInitialY] = nullptr;
+
+            MyBoard[PositionInitialX][PositionInitialY - 1] = MyBoard[PositionFinalX][PositionFinalY];
+            MyBoard[PositionInitialX][PositionInitialY - 1] -> move((PositionInitialY - 1) * 80, PositionInitialX * 80);
+            MyBoard[PositionInitialX][PositionInitialY - 1] -> SetPosition(PositionInitialX, PositionInitialY - 1);
+            MyBoard[PositionFinalX][PositionFinalY] = nullptr;
+
+        }
+        if (PositionFinalY == 7) {
+            /* Enroque corto */
+            std::cout << "Mover Rey ->[" << PositionFinalX << "," << PositionFinalY - 1 << "]" << std::endl;
+            std::cout << "Mover Torre ->[" << PositionInitialX << "," << PositionInitialY + 1 << "]" << std::endl;
+
+            MyBoard[PositionFinalX][PositionFinalY - 1] = MyBoard[PositionInitialX][PositionInitialY];
+            MyBoard[PositionFinalX][PositionFinalY - 1] -> move((PositionFinalY - 1) * 80, PositionFinalX * 80);
+            MyBoard[PositionFinalX][PositionFinalY - 1] -> SetPosition(PositionFinalX, PositionFinalY - 1);
+            MyBoard[PositionInitialX][PositionInitialY] = nullptr;
+
+            MyBoard[PositionInitialX][PositionInitialY + 1] = MyBoard[PositionFinalX][PositionFinalY];
+            MyBoard[PositionInitialX][PositionInitialY + 1] -> move((PositionInitialY + 1) * 80, PositionInitialX * 80);
+            MyBoard[PositionInitialX][PositionInitialY + 1] -> SetPosition(PositionInitialX, PositionInitialY + 1);
+            MyBoard[PositionFinalX][PositionFinalY] = nullptr;
+        }
+    }
+
+    if (TurnColor.compare("Black") == 0) {
+        if (PositionFinalY == 7) {
+            std::cout << "Mover Rey ->[" << PositionFinalX << "," << PositionFinalY - 2 << "]" << std::endl;
+            std::cout << "Mover Torre ->[" << PositionInitialX << "," << PositionInitialY + 1 << "]" << std::endl;
+
+            MyBoard[PositionFinalX][PositionFinalY - 2] = MyBoard[PositionInitialX][PositionInitialY];
+            MyBoard[PositionFinalX][PositionFinalY - 2] -> move((PositionFinalY - 2) * 80, PositionFinalX * 80);
+            MyBoard[PositionFinalX][PositionFinalY - 2] -> SetPosition(PositionFinalX, PositionFinalY - 2);
+            MyBoard[PositionInitialX][PositionInitialY] = nullptr;
+
+            MyBoard[PositionInitialX][PositionInitialY + 1] = MyBoard[PositionFinalX][PositionFinalY];
+            MyBoard[PositionInitialX][PositionInitialY + 1] -> move((PositionInitialY + 1) * 80, PositionInitialX * 80);
+            MyBoard[PositionInitialX][PositionInitialY + 1] -> SetPosition(PositionInitialX, PositionInitialY + 1);
+            MyBoard[PositionFinalX][PositionFinalY] = nullptr;
+        }
+        if (PositionFinalY == 0) {
+            std::cout << "Mover Rey ->[" << PositionFinalX << "," << PositionFinalY + 1 << "]" << std::endl;
+            std::cout << "Mover Torre ->[" << PositionInitialX << "," << PositionInitialY - 1 << "]" << std::endl;
+
+            MyBoard[PositionFinalX][PositionFinalY + 1] = MyBoard[PositionInitialX][PositionInitialY];
+            MyBoard[PositionFinalX][PositionFinalY + 1] -> move((PositionFinalY + 1) * 80, PositionFinalX * 80);
+            MyBoard[PositionFinalX][PositionFinalY + 1] -> SetPosition(PositionFinalX, PositionFinalY + 1);
+            MyBoard[PositionInitialX][PositionInitialY] = nullptr;
+
+            MyBoard[PositionInitialX][PositionInitialY - 1] = MyBoard[PositionFinalX][PositionFinalY];
+            MyBoard[PositionInitialX][PositionInitialY - 1] -> move((PositionInitialY - 1) * 80, PositionInitialX * 80);
+            MyBoard[PositionInitialX][PositionInitialY - 1] -> SetPosition(PositionInitialX, PositionInitialY - 1);
+            MyBoard[PositionFinalX][PositionFinalY] = nullptr;
+        }
+
+    }
+
+    RemoveDrawnMovements();
+    ChangeTurnColor();
 }
 
 void Board::ChangeTurnColor() {

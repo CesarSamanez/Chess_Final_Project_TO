@@ -57,7 +57,7 @@ private:
     std::string TurnColor = "White";
 
     /* Mapear tablero */
-    Piece *MyBoardMapping[8][8];
+    Piece *MyBoard[8][8];
 
     Piece * black_rook1 = new Rook(this, "Black");
     Piece * black_rook2 = new Rook(this, "Black");
@@ -97,9 +97,11 @@ private:
     std::vector<QLabel*> posibbleMovementsInBoard;
 
     //Variables auxiliares
-    int ReferentialPositionX, ReferentialPositionY, positionX, positionY;
+    int PositionInitialX, PositionInitialY, PositionFinalX, PositionFinalY;
 
     Piece* PromotionOfPawn(const std::string& _color);
+    bool isCastlingKing();
+    void CastlingKing();
     void ChangeTurnColor();
     void mousePressEvent(QMouseEvent * event) override;
     void dragEnterEvent(QDragEnterEvent * event) override;
