@@ -5,13 +5,13 @@
 Board::Board(QWidget * parent): QWidget(parent), ui(new Ui::Board) {
     ui -> setupUi(this);
 
-    /* Siempre declarar para que funcione */
+    // Siempre declarar para que funcione
     setAcceptDrops(true);
 
     // Imagen del tablero
     BoardIcon.load("../Chess_Final_Project_TO/Images/chess_board.png");
 
-    /* Inicializar tablero de ajedrez */
+    // Inicializar tablero de ajedrez
     InitializeBoard();
 }
 
@@ -19,16 +19,12 @@ void Board::InitializeBoard() {
     // Mapeo de piezas
     MappingOfPieces();
 
-    /* Inicializar piezas en el tablero */
+    // Inicializar piezas en el tablero
     PositionPiecesInBoard();
 }
 
 void Board::PositionPiecesInBoard() {
-    /*
-     * Creacion de piezas y colocarlos en el tablero
-     * mediante posiciones
-     */
-
+    // Creacion de piezas y colocarlos en el tablero mediante posiciones
     for (size_t row = 0; row < 8; row++) {
         for (size_t col = 0; col < 8; col++) {
             if (row < 2 || row > 5) {
@@ -106,8 +102,8 @@ bool Board::ValidateMovement(const int & rowInitial, const int & colInitial, con
 
 void Board::Check(const Piece * piece) {
     if (piece -> GetName().compare("King") != 0) {
-        std::vector < std::pair < int, int >> futureMovements; //futuros movimientos
-        futureMovements = piece -> PossibleMoves(MyBoard);
+        // Futuros movimientos
+        std::vector < std::pair < int, int >> futureMovements = piece -> PossibleMoves(MyBoard);
         for (size_t i = 0; i < futureMovements.size(); i++) {
             if (piece -> GetColor().compare("White") == 0) {
                 if ((futureMovements[i].first == black_king -> GetRow()) && (futureMovements[i].second == black_king -> GetCol())) {
@@ -133,19 +129,41 @@ void Board::ChekMate(const Piece * piece) {
 }
 
 void Board::DeadPosition() {
-    int count = 0;
+    std::string tmpColor;
+    int countKings = 0, countBishops = 0, countBishopsDifferentColor = 0, countKnights = 0, totalPieces = 0;
     for (size_t row = 0; row < 8; row++) {
         for (size_t col = 0; col < 8; col++) {
-            if (MyBoard[row][col] != nullptr) {
-                if (MyBoard[row][col] -> GetName().compare("King") != 0) {
-                    count++;
+            if(MyBoard[row][col]!=nullptr){
+                if (MyBoard[row][col]->GetName().compare("King") == 0) {
+                    countKings++;
+                }else if(MyBoard[row][col]->GetName().compare("Bishop") == 0){
+                    if(countBishops == 0) //Asignar el color al primer alfil
+                    {
+                        tmpColor=MyBoard[row][col]->GetColor();
+                        countBishopsDifferentColor++;
+                    }
+                    if(MyBoard[row][col]->GetColor().compare(tmpColor)!= 0)
+                    {
+                        countBishopsDifferentColor++;
+                    }
+                    countBishops++;
+                }else if(MyBoard[row][col]->GetName().compare("Knight") == 0){
+                    countKnights++;
+                }else{
+                    totalPieces++;
                 }
             }
         }
     }
 
-    if (count == 0) {
-        std::cout << "Tablas" << std::endl;
+    std::cout<<"TOTAL PIECES: "<<totalPieces<<std::endl;
+
+    // Casos: Rey contra rey, rey contra rey y alfil, rey contra rey y caballo, rey, alfil contra rey, alfil del mismo color
+    if(totalPieces == 0 && ((countKings == 2)||((countKings + countBishops) == 3)||((countKings + countBishopsDifferentColor) == 4))){
+        QMessageBox message;
+        message.setText("Dead Position");
+        message.exec();
+        std::cout << "Dead Position\n";
     }
 }
 
@@ -216,13 +234,12 @@ void Board::dropEvent(QDropEvent * event) {
         QByteArray itemData = event -> mimeData() -> data("application/x-dnditemdata");
         QDataStream dataStream( & itemData, QIODevice::ReadOnly);
 
-        /* Recalcular posicion para centrar la pieza */
+        //Recalcular posicion de cada pieza
         PositionFinalX = (event -> pos().y() / 80);
         PositionFinalY = (event -> pos().x() / 80);
         std::cout << "Posicion hacia donde me dirijo [" << PositionFinalX << "," << PositionFinalY << "]\n";
 
-        //Enroque
-        if (isCastlingKing()) {
+        if (isCastlingKing()) { //Enroque
             if (TurnColor.compare("White") == 0) {
                 if (PositionFinalY == 0) //Enroque largo
                     CastlingKing(PositionInitialY - 1, PositionFinalY + 2);
@@ -230,15 +247,12 @@ void Board::dropEvent(QDropEvent * event) {
                 if (PositionFinalY == 7) //Enroque corto
                     CastlingKing(PositionInitialY + 1, PositionFinalY - 1);
             } else if (TurnColor.compare("Black") == 0) {
-                // Enroque largo
                 if (PositionFinalY == 7) //Enroque largo
                     CastlingKing(PositionInitialY + 1, PositionFinalY - 2);
 
-                // Enroque corto
                 if (PositionFinalY == 0) //Enroque corto
                     CastlingKing(PositionInitialY - 1, PositionFinalY + 1);
             }
-
             return;
         }
 
@@ -263,6 +277,7 @@ void Board::dropEvent(QDropEvent * event) {
                     Check(MyBoard[PositionFinalX][PositionFinalY]); //chequea jaque
                     MyBoard[PositionInitialX][PositionInitialY] = nullptr;
 
+                    DeadPosition(); //Verifica posicion muerta
                 } else {
                     // Captura de pieza
                     MyBoard[PositionFinalX][PositionFinalY] -> setVisible(false);
@@ -275,6 +290,7 @@ void Board::dropEvent(QDropEvent * event) {
                     Check(MyBoard[PositionFinalX][PositionFinalY]); //chequea jaque
                     MyBoard[PositionInitialX][PositionInitialY] = nullptr;
 
+                    DeadPosition(); //Verifica posicion muerta
                 }
             } else if (MyBoard[PositionFinalX][PositionFinalY] == nullptr) {
                 if (MyBoard[PositionInitialX][PositionInitialY] -> GetName().compare("Pawn") == 0 && (PositionFinalX == 0 || PositionFinalX == 7)) {
@@ -290,6 +306,7 @@ void Board::dropEvent(QDropEvent * event) {
                     Check(MyBoard[PositionFinalX][PositionFinalY]); //chequea jaque
                     MyBoard[PositionInitialX][PositionInitialY] = nullptr;
 
+                    DeadPosition(); //Verifica posicion muerta
                 } else {
                     //Mover pieza nueva posicion
                     MyBoard[PositionInitialX][PositionInitialY] -> move(PositionFinalY * 80, PositionFinalX * 80);
@@ -308,12 +325,10 @@ void Board::dropEvent(QDropEvent * event) {
                 event -> setDropAction(Qt::MoveAction);
                 event -> accept();
                 RemoveDrawnMovements();
-                // ChangeTurnColor();
             } else {
                 event -> acceptProposedAction();
             }
-            // Cambio de turno de jugador
-            ChangeTurnColor();
+            ChangeTurnColor(); // Cambio de turno de jugador
         } else {
             event -> ignore();
         }
@@ -393,8 +408,7 @@ bool Board::isCastlingKing() {
     return false;
 }
 
-void Board::CastlingKing(const int PositionModifiedInitialY,
-                         const int PositionModifiedFinalY) {
+void Board::CastlingKing(const int PositionModifiedInitialY, const int PositionModifiedFinalY) {
     std::cout << "Mover Rey ->[" << PositionFinalX << "," << PositionModifiedFinalY << "]" << std::endl;
     std::cout << "Mover Torre ->[" << PositionInitialX << "," << PositionModifiedInitialY << "]" << std::endl;
 
