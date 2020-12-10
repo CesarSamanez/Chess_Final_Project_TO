@@ -79,11 +79,7 @@ void Board::MappingOfPieces() {
 
 }
 
-bool Board::ValidateMovement(const int & rowInitial,
-                             const int & colInitial,
-                             const int & rowFinal,
-                             const int & colFinal) {
-
+bool Board::ValidateMovement(const int & rowInitial, const int & colInitial, const int & rowFinal, const int & colFinal) {
     auto piecePosition = MyBoard[rowInitial][colInitial];
     std::vector < std::pair < int, int >> misMovimientos;
 
@@ -223,7 +219,6 @@ void Board::dropEvent(QDropEvent * event) {
         /* Recalcular posicion para centrar la pieza */
         PositionFinalX = (event -> pos().y() / 80);
         PositionFinalY = (event -> pos().x() / 80);
-
         std::cout << "Posicion hacia donde me dirijo [" << PositionFinalX << "," << PositionFinalY << "]\n";
 
         //Enroque
@@ -400,8 +395,8 @@ void Board::CastlingKing() {
             MyBoard[PositionInitialX][PositionInitialY - 1] -> move((PositionInitialY - 1) * 80, PositionInitialX * 80);
             MyBoard[PositionInitialX][PositionInitialY - 1] -> SetPosition(PositionInitialX, PositionInitialY - 1);
             MyBoard[PositionFinalX][PositionFinalY] = nullptr;
-
         }
+
         if (PositionFinalY == 7) {
             /* Enroque corto */
             std::cout << "Mover Rey ->[" << PositionFinalX << "," << PositionFinalY - 1 << "]" << std::endl;
@@ -434,6 +429,7 @@ void Board::CastlingKing() {
             MyBoard[PositionInitialX][PositionInitialY + 1] -> SetPosition(PositionInitialX, PositionInitialY + 1);
             MyBoard[PositionFinalX][PositionFinalY] = nullptr;
         }
+
         if (PositionFinalY == 0) {
             std::cout << "Mover Rey ->[" << PositionFinalX << "," << PositionFinalY + 1 << "]" << std::endl;
             std::cout << "Mover Torre ->[" << PositionInitialX << "," << PositionInitialY - 1 << "]" << std::endl;
@@ -448,7 +444,6 @@ void Board::CastlingKing() {
             MyBoard[PositionInitialX][PositionInitialY - 1] -> SetPosition(PositionInitialX, PositionInitialY - 1);
             MyBoard[PositionFinalX][PositionFinalY] = nullptr;
         }
-
     }
 
     RemoveDrawnMovements();
