@@ -223,7 +223,22 @@ void Board::dropEvent(QDropEvent * event) {
 
         //Enroque
         if (isCastlingKing()) {
-            CastlingKing();
+            if (TurnColor.compare("White") == 0) {
+                if (PositionFinalY == 0) //Enroque largo
+                    CastlingKing(PositionInitialY - 1, PositionFinalY + 2);
+
+                if (PositionFinalY == 7) //Enroque corto
+                    CastlingKing(PositionInitialY + 1, PositionFinalY - 1);
+            } else if (TurnColor.compare("Black") == 0) {
+                // Enroque largo
+                if (PositionFinalY == 7) //Enroque largo
+                    CastlingKing(PositionInitialY + 1, PositionFinalY - 2);
+
+                // Enroque corto
+                if (PositionFinalY == 0) //Enroque corto
+                    CastlingKing(PositionInitialY - 1, PositionFinalY + 1);
+            }
+
             return;
         }
 
@@ -378,73 +393,20 @@ bool Board::isCastlingKing() {
     return false;
 }
 
-void Board::CastlingKing() {
+void Board::CastlingKing(const int PositionModifiedInitialY,
+                         const int PositionModifiedFinalY) {
+    std::cout << "Mover Rey ->[" << PositionFinalX << "," << PositionModifiedFinalY << "]" << std::endl;
+    std::cout << "Mover Torre ->[" << PositionInitialX << "," << PositionModifiedInitialY << "]" << std::endl;
 
-    if (TurnColor.compare("White") == 0) {
-        if (PositionFinalY == 0) {
-            /* Enroque largo */
-            std::cout << "Mover Rey ->[" << PositionFinalX << "," << PositionFinalY + 2 << "]" << std::endl;
-            std::cout << "Mover Torre ->[" << PositionInitialX << "," << PositionInitialY - 1 << "]" << std::endl;
+    MyBoard[PositionFinalX][PositionModifiedFinalY] = MyBoard[PositionInitialX][PositionInitialY];
+    MyBoard[PositionFinalX][PositionModifiedFinalY] -> move(PositionModifiedFinalY * 80, PositionFinalX * 80);
+    MyBoard[PositionFinalX][PositionModifiedFinalY] -> SetPosition(PositionFinalX, PositionModifiedFinalY);
+    MyBoard[PositionInitialX][PositionInitialY] = nullptr;
 
-            MyBoard[PositionFinalX][PositionFinalY + 2] = MyBoard[PositionInitialX][PositionInitialY];
-            MyBoard[PositionFinalX][PositionFinalY + 2] -> move((PositionFinalY + 2) * 80, PositionFinalX * 80);
-            MyBoard[PositionFinalX][PositionFinalY + 2] -> SetPosition(PositionFinalX, PositionFinalY + 2);
-            MyBoard[PositionInitialX][PositionInitialY] = nullptr;
-
-            MyBoard[PositionInitialX][PositionInitialY - 1] = MyBoard[PositionFinalX][PositionFinalY];
-            MyBoard[PositionInitialX][PositionInitialY - 1] -> move((PositionInitialY - 1) * 80, PositionInitialX * 80);
-            MyBoard[PositionInitialX][PositionInitialY - 1] -> SetPosition(PositionInitialX, PositionInitialY - 1);
-            MyBoard[PositionFinalX][PositionFinalY] = nullptr;
-        }
-
-        if (PositionFinalY == 7) {
-            /* Enroque corto */
-            std::cout << "Mover Rey ->[" << PositionFinalX << "," << PositionFinalY - 1 << "]" << std::endl;
-            std::cout << "Mover Torre ->[" << PositionInitialX << "," << PositionInitialY + 1 << "]" << std::endl;
-
-            MyBoard[PositionFinalX][PositionFinalY - 1] = MyBoard[PositionInitialX][PositionInitialY];
-            MyBoard[PositionFinalX][PositionFinalY - 1] -> move((PositionFinalY - 1) * 80, PositionFinalX * 80);
-            MyBoard[PositionFinalX][PositionFinalY - 1] -> SetPosition(PositionFinalX, PositionFinalY - 1);
-            MyBoard[PositionInitialX][PositionInitialY] = nullptr;
-
-            MyBoard[PositionInitialX][PositionInitialY + 1] = MyBoard[PositionFinalX][PositionFinalY];
-            MyBoard[PositionInitialX][PositionInitialY + 1] -> move((PositionInitialY + 1) * 80, PositionInitialX * 80);
-            MyBoard[PositionInitialX][PositionInitialY + 1] -> SetPosition(PositionInitialX, PositionInitialY + 1);
-            MyBoard[PositionFinalX][PositionFinalY] = nullptr;
-        }
-    }
-
-    if (TurnColor.compare("Black") == 0) {
-        if (PositionFinalY == 7) {
-            std::cout << "Mover Rey ->[" << PositionFinalX << "," << PositionFinalY - 2 << "]" << std::endl;
-            std::cout << "Mover Torre ->[" << PositionInitialX << "," << PositionInitialY + 1 << "]" << std::endl;
-
-            MyBoard[PositionFinalX][PositionFinalY - 2] = MyBoard[PositionInitialX][PositionInitialY];
-            MyBoard[PositionFinalX][PositionFinalY - 2] -> move((PositionFinalY - 2) * 80, PositionFinalX * 80);
-            MyBoard[PositionFinalX][PositionFinalY - 2] -> SetPosition(PositionFinalX, PositionFinalY - 2);
-            MyBoard[PositionInitialX][PositionInitialY] = nullptr;
-
-            MyBoard[PositionInitialX][PositionInitialY + 1] = MyBoard[PositionFinalX][PositionFinalY];
-            MyBoard[PositionInitialX][PositionInitialY + 1] -> move((PositionInitialY + 1) * 80, PositionInitialX * 80);
-            MyBoard[PositionInitialX][PositionInitialY + 1] -> SetPosition(PositionInitialX, PositionInitialY + 1);
-            MyBoard[PositionFinalX][PositionFinalY] = nullptr;
-        }
-
-        if (PositionFinalY == 0) {
-            std::cout << "Mover Rey ->[" << PositionFinalX << "," << PositionFinalY + 1 << "]" << std::endl;
-            std::cout << "Mover Torre ->[" << PositionInitialX << "," << PositionInitialY - 1 << "]" << std::endl;
-
-            MyBoard[PositionFinalX][PositionFinalY + 1] = MyBoard[PositionInitialX][PositionInitialY];
-            MyBoard[PositionFinalX][PositionFinalY + 1] -> move((PositionFinalY + 1) * 80, PositionFinalX * 80);
-            MyBoard[PositionFinalX][PositionFinalY + 1] -> SetPosition(PositionFinalX, PositionFinalY + 1);
-            MyBoard[PositionInitialX][PositionInitialY] = nullptr;
-
-            MyBoard[PositionInitialX][PositionInitialY - 1] = MyBoard[PositionFinalX][PositionFinalY];
-            MyBoard[PositionInitialX][PositionInitialY - 1] -> move((PositionInitialY - 1) * 80, PositionInitialX * 80);
-            MyBoard[PositionInitialX][PositionInitialY - 1] -> SetPosition(PositionInitialX, PositionInitialY - 1);
-            MyBoard[PositionFinalX][PositionFinalY] = nullptr;
-        }
-    }
+    MyBoard[PositionInitialX][PositionModifiedInitialY] = MyBoard[PositionFinalX][PositionFinalY];
+    MyBoard[PositionInitialX][PositionModifiedInitialY] -> move(PositionModifiedInitialY * 80, PositionInitialX * 80);
+    MyBoard[PositionInitialX][PositionModifiedInitialY] -> SetPosition(PositionInitialX, PositionModifiedInitialY);
+    MyBoard[PositionFinalX][PositionFinalY] = nullptr;
 
     RemoveDrawnMovements();
     ChangeTurnColor();

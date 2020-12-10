@@ -101,7 +101,7 @@ private:
 
     Piece* PromotionOfPawn(const std::string& _color);
     bool isCastlingKing();
-    void CastlingKing();
+    void CastlingKing(const int PositionModifiedInitialY, const int PositionModifiedFinalY);
     void ChangeTurnColor();
     void mousePressEvent(QMouseEvent * event) override;
     void dragEnterEvent(QDragEnterEvent * event) override;
