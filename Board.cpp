@@ -5,6 +5,11 @@
 Board::Board(QWidget * parent): QWidget(parent), ui(new Ui::Board) {
     ui -> setupUi(this);
 
+    Control = new ControlInterface();
+    Control->show();
+
+
+
     // Siempre declarar para que funcione
     setAcceptDrops(true);
 
@@ -280,6 +285,7 @@ void Board::dropEvent(QDropEvent * event) {
                     DeadPosition(); //Verifica posicion muerta
                 } else {
                     // Captura de pieza
+                    Control->UpdateCounterPieces(MyBoard[PositionFinalX][PositionFinalY]->GetName(), MyBoard[PositionFinalX][PositionFinalY]->GetColor()); // Actualizar contador
                     MyBoard[PositionFinalX][PositionFinalY] -> setVisible(false);
                     std::cout << "Se capturo la pieza [" << PositionFinalX << "," << PositionFinalY << "]\n";
                     ChekMate(MyBoard[PositionFinalX][PositionFinalY]); //validar JaqueMate
@@ -431,6 +437,8 @@ void Board::ChangeTurnColor() {
         TurnColor = "Black";
     else
         TurnColor = "White";
+
+    Control->UpdateTurn(TurnColor);
 }
 
 Board::~Board() {

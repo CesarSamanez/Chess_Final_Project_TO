@@ -23,6 +23,7 @@
 #include "King.h"
 #include "Queen.h"
 #include "Pawn.h"
+#include "ControlInterface.h"
 
 namespace Ui {
 class Board;
@@ -53,6 +54,8 @@ private:
     /* Icono */
     QPixmap BoardIcon;
     Ui::Board * ui;
+
+    ControlInterface* Control;
 
     std::string TurnColor = "White";
 
