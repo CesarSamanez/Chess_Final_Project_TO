@@ -8,8 +8,6 @@ Board::Board(QWidget * parent): QWidget(parent), ui(new Ui::Board) {
     Control = new ControlInterface();
     Control->show();
 
-
-
     // Siempre declarar para que funcione
     setAcceptDrops(true);
 
@@ -112,11 +110,17 @@ void Board::Check(const Piece * piece) {
         for (size_t i = 0; i < futureMovements.size(); i++) {
             if (piece -> GetColor().compare("White") == 0) {
                 if ((futureMovements[i].first == black_king -> GetRow()) && (futureMovements[i].second == black_king -> GetCol())) {
-                    std::cout << "Jaque pos [" << futureMovements[i].first << "," << futureMovements[i].second << "]\n";
+                    QMessageBox message;
+                    message.setText("Warning Jake - White");
+                    message.exec();
+                    //      std::cout << "Jaque pos [" << futureMovements[i].first << "," << futureMovements[i].second << "]\n";
                 }
             } else if (piece -> GetColor().compare("Black") == 0) {
                 if ((futureMovements[i].first == white_king -> GetRow()) && (futureMovements[i].second == white_king -> GetCol())) {
-                    std::cout << "Jaque pos [" << futureMovements[i].first << "," << futureMovements[i].second << "]\n";
+                    QMessageBox message;
+                    message.setText("Warning Jake - Black");
+                    message.exec();
+                    //    std::cout << "Jaque pos [" << futureMovements[i].first << "," << futureMovements[i].second << "]\n";
                 }
             }
         }
@@ -126,10 +130,10 @@ void Board::Check(const Piece * piece) {
 void Board::ChekMate(const Piece * piece) {
     if (piece -> GetName().compare("King") == 0) {
         QMessageBox message;
-        message.setText("Jaque Mate");
+        message.setText("Jaque Mate - "+ QString::fromUtf8(TurnColor.c_str())+" WIN!");
         message.exec();
-        std::cout << "Jaque mate\n";
-        exit(1); //reemplazo por menu de inicio
+        // std::cout << "Jaque mate\n";
+        exit(0); //reemplazo por menu de inicio
     }
 }
 
@@ -168,6 +172,7 @@ void Board::DeadPosition() {
         QMessageBox message;
         message.setText("Dead Position");
         message.exec();
+        exit(0);
         std::cout << "Dead Position\n";
     }
 }
@@ -242,7 +247,7 @@ void Board::dropEvent(QDropEvent * event) {
         //Recalcular posicion de cada pieza
         PositionFinalX = (event -> pos().y() / 80);
         PositionFinalY = (event -> pos().x() / 80);
-        std::cout << "Posicion hacia donde me dirijo [" << PositionFinalX << "," << PositionFinalY << "]\n";
+        // std::cout << "Posicion hacia donde me dirijo [" << PositionFinalX << "," << PositionFinalY << "]\n";
 
         if (isCastlingKing()) { //Enroque
             if (TurnColor.compare("White") == 0) {
@@ -267,7 +272,7 @@ void Board::dropEvent(QDropEvent * event) {
                 // Validacion para promocion de peon
                 if (MyBoard[PositionInitialX][PositionInitialY] -> GetName().compare("Pawn") == 0 && (PositionFinalX == 0 || PositionFinalX == 7)) {
                     MyBoard[PositionFinalX][PositionFinalY] -> setVisible(false);
-                    std::cout << "Se capturo la pieza [" << PositionFinalX << "," << PositionFinalY << "]\n";
+                    //std::cout << "Se capturo la pieza [" << PositionFinalX << "," << PositionFinalY << "]\n";
                     ChekMate(MyBoard[PositionFinalX][PositionFinalY]); //validar JaqueMate
                     MyBoard[PositionInitialX][PositionInitialY] -> setVisible(false);
 
@@ -287,7 +292,7 @@ void Board::dropEvent(QDropEvent * event) {
                     // Captura de pieza
                     Control->UpdateCounterPieces(MyBoard[PositionFinalX][PositionFinalY]->GetName(), MyBoard[PositionFinalX][PositionFinalY]->GetColor()); // Actualizar contador
                     MyBoard[PositionFinalX][PositionFinalY] -> setVisible(false);
-                    std::cout << "Se capturo la pieza [" << PositionFinalX << "," << PositionFinalY << "]\n";
+                    //std::cout << "Se capturo la pieza [" << PositionFinalX << "," << PositionFinalY << "]\n";
                     ChekMate(MyBoard[PositionFinalX][PositionFinalY]); //validar JaqueMate
                     MyBoard[PositionInitialX][PositionInitialY] -> move(PositionFinalY * 80, PositionFinalX * 80);
                     MyBoard[PositionFinalX][PositionFinalY] = MyBoard[PositionInitialX][PositionInitialY];
@@ -378,11 +383,11 @@ void Board::mousePressEvent(QMouseEvent * event) {
     PositionInitialY = event -> pos().x() / 80;
 
     if (child == nullptr || isAdvertenceWidget() || MyBoard[PositionInitialX][PositionInitialY] -> GetColor().compare(TurnColor) != 0) {
-        std::cerr << "TURNO DEL JUGADOR " << TurnColor << std::endl;
+        // std::cerr << "TURNO DEL JUGADOR " << TurnColor << std::endl;
         return;
     }
 
-    std::cout << "Posicion donde presiono primero [" << PositionInitialX << "," << PositionInitialY << "]\n";
+    //std::cout << "Posicion donde presiono primero [" << PositionInitialX << "," << PositionInitialY << "]\n";
 
     QByteArray itemData;
     QDataStream dataStream( & itemData, QIODevice::WriteOnly);
@@ -415,8 +420,8 @@ bool Board::isCastlingKing() {
 }
 
 void Board::CastlingKing(const int PositionModifiedInitialY, const int PositionModifiedFinalY) {
-    std::cout << "Mover Rey ->[" << PositionFinalX << "," << PositionModifiedFinalY << "]" << std::endl;
-    std::cout << "Mover Torre ->[" << PositionInitialX << "," << PositionModifiedInitialY << "]" << std::endl;
+    // std::cout << "Mover Rey ->[" << PositionFinalX << "," << PositionModifiedFinalY << "]" << std::endl;
+    //std::cout << "Mover Torre ->[" << PositionInitialX << "," << PositionModifiedInitialY << "]" << std::endl;
 
     MyBoard[PositionFinalX][PositionModifiedFinalY] = MyBoard[PositionInitialX][PositionInitialY];
     MyBoard[PositionFinalX][PositionModifiedFinalY] -> move(PositionModifiedFinalY * 80, PositionFinalX * 80);
